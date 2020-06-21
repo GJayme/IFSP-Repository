@@ -47,11 +47,11 @@
             if (buttonSelected === "=") {
               try {
                 console.log(eval(memory));
-                memory = "";
               } catch (error) {
                 console.log("Error!");
-                memory = "";
               }
+              memory = "";
+              return;
             }
             memory += buttonSelected;
             console.log(memory);
