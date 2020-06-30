@@ -1,23 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
 // 1. Crie uma função que recebe como parâmetro um número X e
 // retorna o endereço de um vetor de X inteiros.
+
+int *retornaEndereco(num)
 {
-  int i = 5;
   int *vetor;
-  vetor = malloc(sizeof(int) * i);
 
-  for (int j = 0; j < i; j++)
+  vetor = malloc(sizeof(int) * num);
+
+  if (vetor == NULL)
   {
-    vetor[j] = j;
-    printf("%d - ", vetor[j]);
+    printf("O sistema operacional não conseguiu reservar a memória!");
   }
+  else
+  {
+    return (int *)vetor;
+  }
+}
 
-  printf("%d", malloc(sizeof(vetor)));
+int main(void)
+{
+  int numero;
+  scanf("%d", &numero);
 
-  free(vetor);
+  printf("O endereço do vetor com %d é de %p\n", numero, retornaEndereco(numero));
 
   return 0;
 }
