@@ -2,12 +2,13 @@
 #include <stdlib.h>
 
 int main(void)
-// Escreva um programa em C que solicite ao usuário
-// um número n e então lê um vetor de n notas e
-// calcula a média aritmética.
-// - Usar alocação dinâmica do vetor;
-// - Liberar a memória ao final;
-// - Não limitar o uso da memória.
+/*Escreva um programa em C que solicite ao usuário
+um número n e então lê um vetor de n notas e
+calcula a média aritmética.
+- Usar alocação dinâmica do vetor;
+- Liberar a memória ao final;
+- Não limitar o uso da memória.
+*/
 {
   int n = 0;
 
