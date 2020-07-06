@@ -10,38 +10,40 @@ calcula a média aritmética.
 - Não limitar o uso da memória.
 */
 {
-  int n = 0;
+  int num = 0;
 
-  //get n
-  printf("Digite um núme: ");
-  scanf("%d", &n);
+  // Pegando num
+  printf("Digite um número: ");
+  scanf("%d", &num);
 
-  // alocar vetor
-  float *vet;
-  vet = calloc(n, sizeof(float));
-  if (vet == NULL)
+  // Alocando memoria do vetor
+  float *notas;
+  notas = malloc(sizeof(float) * num);
+  if (notas == NULL)
   {
     printf("Memoria insuficiente!");
     return (NULL);
   }
 
-  //get grades
-  for (int i = 0; i < n; i++)
+  // Inputando as notas
+  for (int i = 0; i < num; i++)
   {
     printf("Digite a nota %d: ", i + 1);
-    scanf("%f", &vet[i]);
+    scanf("%f", &notas[i]);
   }
 
-  // calc med
+  // Calculando a média
   float soma = 0;
-  for (int i = 0; i < n; i++)
+  float media = 0;
+  for (int i = 0; i < num; i++)
   {
-    soma += vet[i];
+    soma += notas[i];
   }
 
-  // free vetor
-  free(vet);
-  printf("A media da turma é %.2f", soma / n);
+  media = soma/num;
+
+  free(notas);
+  printf("A media da turma é %.2f\n", media);
 
   return 0;
 }
