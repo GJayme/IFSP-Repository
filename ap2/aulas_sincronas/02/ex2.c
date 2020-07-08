@@ -8,7 +8,7 @@
   soma.
 */
 
-int montaMatriz(float linhas, float colunas) 
+float **montaMatriz(float linhas, float colunas) 
 {
   float **matriz;
 
@@ -28,7 +28,7 @@ int montaMatriz(float linhas, float colunas)
   }
 
   // Alocando memoria para as colunas:
-  for(int i = 1; i <= linhas; i ++)
+  for(int i = 0; i < linhas; i ++)
   {
     matriz[i] = (float *)malloc(sizeof(float) * colunas);
     if(matriz[i] == NULL)
@@ -39,25 +39,30 @@ int montaMatriz(float linhas, float colunas)
   }
 
   // Populando a matriz:
-  for (int i = 1; i <= linhas; i++)
+  for (int i = 0; i < linhas; i++)
   {
-    for (int j = 1; j <= colunas; j++){
-      printf("Insira um valor para a linha %d e coluna %d: \n", i, j);
+    for (int j = 0; j < colunas; j++){
+      printf("Insira um valor para a linha %d e coluna %d: \n", i+1, j+1);
       scanf("%f", &matriz[i][j]);
     }
   }
 
   // Imprimindo a Matriz:
-  for (int i = 1; i <= linhas; i++)
+  for (int i = 0; i < linhas; i++)
   {
-    for (int j = 1; j <= colunas; j++){
+    for (int j = 0; j < colunas; j++){
       printf("%f ", matriz[i][j]);
     }
     printf("\n");
   }
 
-  // Limpando memória:
-  for (int i = 1; i <= linhas; i++){
+  return matriz;
+}
+
+// Limpando memória:
+int **limpaMatriz(float **matriz, int linha)
+{
+  for (int i = 0; i < linha; i++){
     free(matriz[i]);
   }
 
@@ -68,7 +73,50 @@ int montaMatriz(float linhas, float colunas)
 
 int main() 
 {
-  montaMatriz(2,2);
+  float **matriz1 = montaMatriz(3,4);
+  float **matriz2 = montaMatriz(3,4);
+  
+  float **matrizSoma;
+
+  matrizSoma = malloc(sizeof(float *) * 3);
+  if (matrizSoma == NULL)
+  {
+    printf("Memória insuficiente!");
+    return 0;
+  }
+
+  for(int i = 0; i < 3; i++)
+  {
+    matrizSoma[i] = (float *)malloc(sizeof(float) * 4);
+    if(matrizSoma[i] == NULL)
+    {
+      printf("Memoria insuficiente!");
+      return 0;
+    }
+  }
+
+  printf("\n");
+
+  for (int i = 0; i < 3; i++)
+  {
+    for(int j = 0; j < 4; j++)
+    {
+      matrizSoma[i][j] = matriz1[i][j] + matriz2[i][j];
+    }
+  }
+
+  for (int i = 0; i < 3; i++)
+  {
+    for(int j = 0; j < 4; j++)
+    {
+      printf("%f ", matrizSoma[i][j]);
+    }
+    printf("\n");
+  }
+
+  limpaMatriz(matriz1, 3);
+  limpaMatriz(matriz2, 3);
+  limpaMatriz(matrizSoma, 3);
+
+  return 0;
 }
-
-
