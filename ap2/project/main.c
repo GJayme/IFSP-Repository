@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define TAM_nome 50
 #define TAM_sobrenome 50
@@ -112,6 +113,16 @@ int main()
       break;
     case 0:
       printf("Saindo do programa...\n");
+      for (int i = 0; i <= countAlunos - 1; i++)
+      {
+        printf("Nome: %s", alunos[i].nome);
+        printf("Sobrenome: %s", alunos[i].sobrenome);
+        printf("Dia de nascimento: %d\n", alunos[i].dataNascimento.dia);
+        printf("Mes de nascimento: %d\n", alunos[i].dataNascimento.mes);
+        printf("Ano de nascimento: %d\n", alunos[i].dataNascimento.ano);
+        printf("Prontuario: %d\n", alunos[i].prontuario);
+        printf("Curso: %s\n", alunos[i].curso);
+      }
       exit(0);
       break;
 
