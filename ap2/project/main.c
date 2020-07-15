@@ -6,24 +6,63 @@
 #define TAM_sobrenome 50
 
 // STRUCT DATA
-struct data_nascimento
+typedef struct data_nascimento
 {
   int dia;
   int mes;
   int ano;
-};
+} data;
 
 // STRUCT ALUNO
-struct cadastra_aluno
+typedef struct cadastra_aluno
 {
   char nome[TAM_nome];
   char sobrenome[TAM_sobrenome];
-  struct data_nascimento dataNascimento;
+  data dataNascimento;
   int prontuario;
   char curso[4];
-} alunos[1000];
+} aluno;
 
-// MENU
+void cadastraAluno(aluno *alunos, int *numAlunos)
+{
+  if (*numAlunos < 1000)
+  {
+    printf("Bem vindo a tela de cadastro de aluno.\n");
+    printf("Nome: ");
+    getchar();
+    fgets(alunos[*numAlunos].nome, TAM_nome, stdin);
+
+    printf("Sobrenome: ");
+    fgets(alunos[*numAlunos].sobrenome, TAM_sobrenome, stdin);
+
+    printf("Dia de nascimento: ");
+    scanf("%d", &alunos[*numAlunos].dataNascimento.dia);
+
+    printf("Mês de nascimento: ");
+    scanf("%d", &alunos[*numAlunos].dataNascimento.mes);
+
+    printf("Ano de nascimento: ");
+    scanf("%d", &alunos[*numAlunos].dataNascimento.ano);
+
+    printf("Número do prontuario ");
+    scanf("%d", &alunos[*numAlunos].prontuario);
+
+    printf("Curso: ");
+    getchar();
+    fgets(alunos[*numAlunos].curso, 4, stdin);
+
+    alunos[*numAlunos].nome[strcspn(alunos[*numAlunos].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+    alunos[*numAlunos].sobrenome[strcspn(alunos[*numAlunos].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+
+    *numAlunos += 1;
+    }
+  else
+  {
+    printf("Número máximo de alunos cadastrados!");
+  }
+};
+
+// MENU PRINCIPAL
 void printMenu()
 {
   printf("---------------MENU---------------\n");
@@ -35,13 +74,25 @@ void printMenu()
   printf("----------------------------------\n");
 };
 
-//PRINT ALL ALUNOS
-void printAllAlunos(int tamamnhoVetor)
+// SUB MENU ORDENAÇAO DE ALUNOS
+void printSubMenu()
+{
+  printf("---------------ORDENAR ALUNOS POR---------------\n");
+  printf("1 - Nome e sobrenome\n");
+  printf("2 - Sobrenome e nome\n");
+  printf("3 - Data de nascimento\n");
+  printf("4 - Prontuario\n");
+  printf("0 - Curso\n");
+  printf("------------------------------------------------\n");
+};
+
+//IMPRIMIR TODOS OS ALUNOS
+void printAllAlunos(int tamanhoVetor, aluno *alunos)
 {
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|          Nome        |          Sobrenome        | Dia | Mês |  Ano  |        Prontuario        |  CURSO  |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
-  for (int i = 0; i < tamamnhoVetor; i++)
+  for (int i = 0; i < tamanhoVetor; i++)
   {
     printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[i].nome, alunos[i].sobrenome, alunos[i].dataNascimento.dia, alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano, alunos[i].prontuario, alunos[i].curso);
   }
@@ -50,6 +101,7 @@ void printAllAlunos(int tamamnhoVetor)
 
 int main()
 {
+  aluno alunos[1000];
   int selecionaOpcao, countAlunos = 0;
 
   while (1)
@@ -60,61 +112,7 @@ int main()
     switch (selecionaOpcao)
     {
     case 1:
-      if (countAlunos == 0)
-      {
-        printf("Bem vindo a tela de cadastro de aluno.\n");
-        printf("Nome: ");
-        getchar();
-        fgets(alunos[countAlunos].nome, TAM_nome, stdin);
-
-        printf("Sobrenome: ");
-        fgets(alunos[countAlunos].sobrenome, TAM_sobrenome, stdin);
-
-        printf("Dia de nascimento: ");
-        scanf("%d", &alunos[countAlunos].dataNascimento.dia);
-
-        printf("Mês de nascimento: ");
-        scanf("%d", &alunos[countAlunos].dataNascimento.mes);
-
-        printf("Ano de nascimento: ");
-        scanf("%d", &alunos[countAlunos].dataNascimento.ano);
-
-        printf("Número do prontuario ");
-        scanf("%d", &alunos[countAlunos].prontuario);
-
-        printf("Curso: ");
-        getchar();
-        fgets(alunos[countAlunos].curso, 4, stdin);
-      }
-      else
-      {
-        printf("Bem vindo a tela de cadastro de aluno.\n");
-        printf("Nome: ");
-        getchar();
-        fgets(alunos[countAlunos].nome, TAM_nome, stdin);
-
-        printf("Sobrenome: ");
-        fgets(alunos[countAlunos].sobrenome, TAM_sobrenome, stdin);
-
-        printf("Dia de nascimento: ");
-        scanf("%d", &alunos[countAlunos].dataNascimento.dia);
-
-        printf("Mês de nascimento: ");
-        scanf("%d", &alunos[countAlunos].dataNascimento.mes);
-
-        printf("Ano de nascimento: ");
-        scanf("%d", &alunos[countAlunos].dataNascimento.ano);
-
-        printf("Número do prontuario ");
-        scanf("%d", &alunos[countAlunos].prontuario);
-
-        printf("Curso: ");
-        getchar();
-        fgets(alunos[countAlunos].curso, 4, stdin);
-      }
-      alunos[countAlunos].nome[strcspn(alunos[countAlunos].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-      alunos[countAlunos].sobrenome[strcspn(alunos[countAlunos].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
-      countAlunos += 1;
+      cadastraAluno(alunos, &countAlunos);
       printMenu();
       break;
     case 2:
@@ -128,7 +126,7 @@ int main()
       break;
     case 0:
       printf("Saindo do programa...\n");
-      printAllAlunos(countAlunos);
+      printAllAlunos(countAlunos, alunos);
       exit(0);
       break;
     default:
