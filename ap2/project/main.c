@@ -38,16 +38,14 @@ void printMenu()
 //PRINT ALL ALUNOS
 void printAllAlunos(int tamamnhoVetor)
 {
-  for (int i = 0; i <= tamamnhoVetor - 1; i++)
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|          Nome        |          Sobrenome        | Dia | Mês |  Ano  |        Prontuario        |  CURSO  |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  for (int i = 0; i < tamamnhoVetor; i++)
   {
-    printf("Nome: %s", alunos[i].nome);
-    printf("Sobrenome: %s", alunos[i].sobrenome);
-    printf("Dia de nascimento: %d\n", alunos[i].dataNascimento.dia);
-    printf("Mes de nascimento: %d\n", alunos[i].dataNascimento.mes);
-    printf("Ano de nascimento: %d\n", alunos[i].dataNascimento.ano);
-    printf("Prontuario: %d\n", alunos[i].prontuario);
-    printf("Curso: %s\n", alunos[i].curso);
+    printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[i].nome, alunos[i].sobrenome, alunos[i].dataNascimento.dia, alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano, alunos[i].prontuario, alunos[i].curso);
   }
+  printf("-------------------------------------------------------------------------------------------------------------\n");
 }
 
 int main()
@@ -114,6 +112,8 @@ int main()
         getchar();
         fgets(alunos[countAlunos].curso, 4, stdin);
       }
+      alunos[countAlunos].nome[strcspn(alunos[countAlunos].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+      alunos[countAlunos].sobrenome[strcspn(alunos[countAlunos].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
       countAlunos += 1;
       printMenu();
       break;
