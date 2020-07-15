@@ -5,18 +5,6 @@
 #define TAM_nome 50
 #define TAM_sobrenome 50
 
-// MENU
-void printMenu()
-{
-  printf("---------------MENU---------------\n");
-  printf("1 - Cadastrar novo aluno\n");
-  printf("2 - Ordenar cadastro de alunos\n");
-  printf("3 - Buscar aluno\n");
-  printf("4 - Remover aluno\n");
-  printf("0 - Sair\n");
-  printf("----------------------------------\n");
-};
-
 // STRUCT DATA
 struct data_nascimento
 {
@@ -34,6 +22,33 @@ struct cadastra_aluno
   int prontuario;
   char curso[4];
 } alunos[1000];
+
+// MENU
+void printMenu()
+{
+  printf("---------------MENU---------------\n");
+  printf("1 - Cadastrar novo aluno\n");
+  printf("2 - Ordenar cadastro de alunos\n");
+  printf("3 - Buscar aluno\n");
+  printf("4 - Remover aluno\n");
+  printf("0 - Sair\n");
+  printf("----------------------------------\n");
+};
+
+//PRINT ALL ALUNOS
+void printAllAlunos(int tamamnhoVetor)
+{
+  for (int i = 0; i <= tamamnhoVetor - 1; i++)
+  {
+    printf("Nome: %s", alunos[i].nome);
+    printf("Sobrenome: %s", alunos[i].sobrenome);
+    printf("Dia de nascimento: %d\n", alunos[i].dataNascimento.dia);
+    printf("Mes de nascimento: %d\n", alunos[i].dataNascimento.mes);
+    printf("Ano de nascimento: %d\n", alunos[i].dataNascimento.ano);
+    printf("Prontuario: %d\n", alunos[i].prontuario);
+    printf("Curso: %s\n", alunos[i].curso);
+  }
+}
 
 int main()
 {
@@ -113,19 +128,9 @@ int main()
       break;
     case 0:
       printf("Saindo do programa...\n");
-      for (int i = 0; i <= countAlunos - 1; i++)
-      {
-        printf("Nome: %s", alunos[i].nome);
-        printf("Sobrenome: %s", alunos[i].sobrenome);
-        printf("Dia de nascimento: %d\n", alunos[i].dataNascimento.dia);
-        printf("Mes de nascimento: %d\n", alunos[i].dataNascimento.mes);
-        printf("Ano de nascimento: %d\n", alunos[i].dataNascimento.ano);
-        printf("Prontuario: %d\n", alunos[i].prontuario);
-        printf("Curso: %s\n", alunos[i].curso);
-      }
+      printAllAlunos(countAlunos);
       exit(0);
       break;
-
     default:
       break;
     }
