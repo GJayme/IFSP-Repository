@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define TAM_nome 50
 #define TAM_sobrenome 50
@@ -133,8 +134,8 @@ void printAllAlunos(int tamanhoVetor, aluno *alunos)
 };
 
 // ORDENAR POSICOES
-// particionar
-int particionar(aluno *vetor, int ini, int fim)
+// particionar nome
+int particionarNome(aluno *vetor, int ini, int fim)
 {
   aluno pivo;
   pivo = vetor[fim];
@@ -151,7 +152,91 @@ int particionar(aluno *vetor, int ini, int fim)
     }
     trocaPosicao(&vetor[ini], &vetor[fim]);
   };
+  return ini;
 };
+
+// particionar sobrenome
+int particionarSobrenome(aluno *vetor, int ini, int fim)
+{
+  aluno pivo;
+  pivo = vetor[fim];
+
+  while (ini < fim)
+  {
+    while (ini < fim && strcmp(vetor[ini].sobrenome, pivo.sobrenome) <= 0)
+    {
+      ini++;
+    }
+    while (ini < fim && strcmp(vetor[ini].sobrenome, pivo.sobrenome) > 0)
+    {
+      fim--;
+    }
+    trocaPosicao(&vetor[ini], &vetor[fim]);
+  };
+  return ini;
+};
+
+// particionar prontuario
+int particionarProntuario(aluno *vetor, int ini, int fim)
+{
+  aluno pivo;
+  pivo = vetor[fim];
+
+  while (ini < fim)
+  {
+    while (ini < fim && strcmp(vetor[ini].prontuario, pivo.prontuario) <= 0)
+    {
+      ini++;
+    }
+    while (ini < fim && strcmp(vetor[ini].prontuario, pivo.prontuario) > 0)
+    {
+      fim--;
+    }
+    trocaPosicao(&vetor[ini], &vetor[fim]);
+  };
+  return ini;
+};
+
+// particionar curso
+int particionarCurso(aluno *vetor, int ini, int fim)
+{
+  aluno pivo;
+  pivo = vetor[fim];
+
+  while (ini < fim)
+  {
+    while (ini < fim && strcmp(vetor[ini].curso, pivo.curso) <= 0)
+    {
+      ini++;
+    }
+    while (ini < fim && strcmp(vetor[ini].curso, pivo.curso) > 0)
+    {
+      fim--;
+    }
+    trocaPosicao(&vetor[ini], &vetor[fim]);
+  };
+  return ini;
+};
+
+int particionarDataNascimento(aluno *vetor, int ini, int fim)
+{
+  aluno pivo;
+  pivo = vetor[fim];
+
+  while (ini < fim)
+  {
+    while (ini < fim &&
+           (vetor[ini].dataNascimento.ano * pow(10.0, 4.0) + vetor[ini].dataNascimento.mes * pow(10.0, 2.0) + vetor[ini].dataNascimento.dia) <=
+               (pivo.dataNascimento.ano * pow(10.0, 4.0) + pivo.dataNascimento.mes * pow(10.0, 2.0) + pivo.dataNascimento.dia))
+      ini++;
+    while (ini < fim &&
+           (vetor[fim].dataNascimento.ano * pow(10.0, 4.0) + vetor[fim].dataNascimento.mes * pow(10.0, 2.0) + vetor[fim].dataNascimento.dia) >
+               (pivo.dataNascimento.ano * pow(10.0, 4.0) + pivo.dataNascimento.mes * pow(10.0, 2.0) + pivo.dataNascimento.dia))
+      fim--;
+    trocaPosicao(&vetor[ini], &vetor[fim]);
+  }
+  return ini;
+}
 
 // trocar de posicao
 void trocaPosicao(aluno *a, aluno *b)
@@ -167,7 +252,7 @@ void quickSort(aluno *alunos, int posicaoInicial, int posicaoFinal)
   int posicaoAtual;
   if (posicaoInicial < posicaoFinal)
   {
-    posicaoAtual = particionar(alunos, posicaoInicial, posicaoFinal);
+    posicaoAtual = particionarNome(alunos, posicaoInicial, posicaoFinal);
     quickSort(alunos, posicaoInicial, posicaoAtual - 1);
     quickSort(alunos, posicaoAtual, posicaoFinal);
   };
@@ -196,7 +281,8 @@ int main()
       switch (selecionaOpcaoOrdenacao)
       {
       case 1:
-        /* code */
+        quickSort(alunos, 0, countAlunos - 1);
+        printAllAlunos(countAlunos, alunos);
         break;
       case 2:
         //
