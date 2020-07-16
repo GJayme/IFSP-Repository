@@ -87,13 +87,20 @@ void printSubMenuOrdenacao()
   printf("3 - Data de nascimento\n");
   printf("4 - Prontuario\n");
   printf("5 - Curso\n");
-  printf("0 - Sair\n");
+  printf("0 - Sair de ordenação\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
 // SUB MENU BUCA POR ALUNOS
-void printSubMenuBusca(){
-
+void printSubMenuBusca()
+{
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|                                             BUSCAR  ALUNOS POR                                            |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("1 - Nome e sobrenome\n");
+  printf("2 - Prontuario\n");
+  printf("0 - Sair da busca\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
 //IMPRIMIR TODOS OS ALUNOS
@@ -153,7 +160,7 @@ void quickSort(aluno *alunos, int posicaoInicial, int posicaoFinal)
 int main()
 {
   aluno alunos[1000];
-  int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, countAlunos = 0;
+  int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaOpcaoBusca, countAlunos = 0;
 
   while (1)
   {
@@ -196,7 +203,20 @@ int main()
       }
       break;
     case 3:
-      printf("Tela de ordenação de pesquisa de alunos");
+      printSubMenuBusca();
+      scanf("%d", &selecionaOpcaoBusca);
+      switch (selecionaOpcaoBusca)
+      {
+      case 1:
+        /* code */
+        break;
+      case 2:
+        //
+        break;
+      case 0:
+        printf("Voltando para o menu principal...\n\n");
+        break;
+      }
       break;
     case 4:
       printf("Tela de ordenação de remoção de alunos");
