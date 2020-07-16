@@ -91,7 +91,7 @@ void printSubMenuOrdenacao()
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
-// SUB MENU BUCA POR ALUNOS
+// SUB MENU BUCAS POR ALUNOS
 void printSubMenuBusca()
 {
   printf("-------------------------------------------------------------------------------------------------------------\n");
@@ -100,6 +100,22 @@ void printSubMenuBusca()
   printf("1 - Nome e sobrenome\n");
   printf("2 - Prontuario\n");
   printf("0 - Sair da busca\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+};
+
+// SUB MENU REMOCÃO DE ALUNOS
+void printSubMenuRemocao()
+{
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|                                             REMOÇÃO ALUNOS POR                                            |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("1 - Nome e sobrenome\n");
+  printf("2 - Nome\n");
+  printf("3 - Sobrenome\n");
+  printf("4 - Prontuário\n");
+  printf("5 - Data de nascimento\n");
+  printf("6 - Curso\n");
+  printf("0 - Sair da remoção\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
@@ -160,7 +176,7 @@ void quickSort(aluno *alunos, int posicaoInicial, int posicaoFinal)
 int main()
 {
   aluno alunos[1000];
-  int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaOpcaoBusca, countAlunos = 0;
+  int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaOpcaoBusca, selecionaOpcaoRemocao, countAlunos = 0;
 
   while (1)
   {
@@ -219,7 +235,32 @@ int main()
       }
       break;
     case 4:
-      printf("Tela de ordenação de remoção de alunos");
+      printSubMenuRemocao();
+      scanf("%d", &selecionaOpcaoRemocao);
+      switch (selecionaOpcaoBusca)
+      {
+      case 1:
+        /* code */
+        break;
+      case 2:
+        //
+        break;
+      case 3:
+        /* code */
+        break;
+      case 4:
+        //
+        break;
+      case 5:
+        /* code */
+        break;
+      case 6:
+        /* code */
+        break;
+      case 0:
+        printf("Voltando para o menu principal...\n\n");
+        break;
+      }
       break;
     case 0:
       printf("Saindo do programa...\n");
