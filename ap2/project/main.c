@@ -77,7 +77,7 @@ void printMenuPrincipal()
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
-// SUB MENU ORDENAÇAO DE ALUNOS
+// SUB MENU ORDENAÇÃO DE ALUNOS
 void printSubMenuOrdenacao()
 {
   printf("-------------------------------------------------------------------------------------------------------------\n");
@@ -86,21 +86,31 @@ void printSubMenuOrdenacao()
   printf("1 - Nome e sobrenome\n");
   printf("2 - Sobrenome e nome\n");
   printf("3 - Data de nascimento\n");
-  printf("4 - Prontuario\n");
+  printf("4 - Prontuário\n");
   printf("5 - Curso\n");
   printf("0 - Sair de ordenação\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
-// SUB MENU BUCAS POR ALUNOS
+// SUB MENU BUSCAS POR ALUNOS
 void printSubMenuBusca()
 {
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|                                             BUSCAR  ALUNOS POR                                            |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("1 - Nome e sobrenome\n");
-  printf("2 - Prontuario\n");
+  printf("2 - Prontuário\n");
   printf("0 - Sair da busca\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+};
+
+// WARNING - ALUNO NÃO ENCONTRADO
+void printAlunoNaoEncontrado(aluno AlunoNaoEncontrado)
+{
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|                                                   AVISO                                                   |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("O aluno %s não foi encontrado!\n", AlunoNaoEncontrado.nome);
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
@@ -130,6 +140,16 @@ void printAllAlunos(int tamanhoVetor, aluno *alunos)
   {
     printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[i].nome, alunos[i].sobrenome, alunos[i].dataNascimento.dia, alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano, alunos[i].prontuario, alunos[i].curso);
   }
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+};
+
+//IMPRIMIR ALUNO ENCONTRADO:
+void printAlunoEncontrado(aluno alunoEncontrado)
+{
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|          Nome        |          Sobrenome        | Dia | Mês |  Ano  |        Prontuario        |  CURSO  |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunoEncontrado.nome, alunoEncontrado.sobrenome, alunoEncontrado.dataNascimento.dia, alunoEncontrado.dataNascimento.mes, alunoEncontrado.dataNascimento.ano, alunoEncontrado.prontuario, alunoEncontrado.curso);
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
@@ -274,29 +294,64 @@ void quickSortCurso(aluno *alunos, int posicaoInicial, int posicaoFinal)
   };
 };
 
-// int particionarDataNascimento(aluno *vetor, int ini, int fim)
-// {
-//   aluno pivo;
-//   pivo = vetor[fim];
+// PARTICIONAR DATA DE NASCIMENTO:
+int particionarDataNascimento(aluno *vetor, int posicaoInicial, int posicaoFinal)
+{
+  aluno pivo;
+  pivo = vetor[posicaoFinal];
 
-//   while (ini < fim)
-//   {
-//     while (ini < fim &&
-//            (vetor[ini].dataNascimento.ano * pow(10.0, 4.0) + vetor[ini].dataNascimento.mes * pow(10.0, 2.0) + vetor[ini].dataNascimento.dia) <=
-//                (pivo.dataNascimento.ano * pow(10.0, 4.0) + pivo.dataNascimento.mes * pow(10.0, 2.0) + pivo.dataNascimento.dia))
-//       ini++;
-//     while (ini < fim &&
-//            (vetor[fim].dataNascimento.ano * pow(10.0, 4.0) + vetor[fim].dataNascimento.mes * pow(10.0, 2.0) + vetor[fim].dataNascimento.dia) >
-//                (pivo.dataNascimento.ano * pow(10.0, 4.0) + pivo.dataNascimento.mes * pow(10.0, 2.0) + pivo.dataNascimento.dia))
-//       fim--;
-//     trocaPosicao(&vetor[ini], &vetor[fim]);
-//   }
-//   return ini;
-// }
+  while (posicaoInicial < posicaoFinal)
+  {
+    while (posicaoInicial < posicaoFinal &&
+           (vetor[posicaoInicial].dataNascimento.ano * 10000 + vetor[posicaoInicial].dataNascimento.mes * 100 + vetor[posicaoInicial].dataNascimento.dia) <= //CONVERTENDO AS DATAS EM EM INT E SOMANDO PARA PODER EFETUAR AS COMPARAÇÕES
+               (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
+      posicaoInicial++;
+    while (posicaoInicial < posicaoFinal &&
+           (vetor[posicaoFinal].dataNascimento.ano * 10000 + vetor[posicaoFinal].dataNascimento.mes * 100 + vetor[posicaoFinal].dataNascimento.dia) >
+               (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
+      posicaoFinal--;
+    trocaPosicao(&vetor[posicaoInicial], &vetor[posicaoFinal]);
+  }
+  return posicaoInicial;
+}
+
+// QUICKSORT DATA DE NASCIMENTO:
+void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFinal)
+{
+  int posicaoAtual;
+  if (posicaoInicial < posicaoFinal)
+  {
+    posicaoAtual = particionarDataNascimento(alunos, posicaoInicial, posicaoFinal);
+    quickSortDataDeNascimento(alunos, posicaoInicial, posicaoAtual - 1);
+    quickSortDataDeNascimento(alunos, posicaoAtual, posicaoFinal);
+  };
+};
+
+// BUSCA DE ALUNO:
+// BUSCA POR NOME:
+int buscarPorNome(aluno *alunos, aluno *buscar, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++)
+  {
+    if (strcmp(alunos[i].nome, buscar[i].nome) && strcmp(alunos[i].sobrenome, buscar[i].sobrenome))
+    {
+      buscar[i].dataNascimento.dia = alunos[i].dataNascimento.dia;
+      buscar[i].dataNascimento.dia = alunos[i].dataNascimento.dia;
+      buscar[i].dataNascimento.dia = alunos[i].dataNascimento.dia;
+      buscar[i].prontuario = alunos[i].prontuario;
+      strcpy(buscar[i].curso, alunos[i].curso);
+
+      return 1;
+    }
+  }
+
+  return 0;
+}
 
 int main()
 {
   aluno alunos[1000];
+  aluno buscaAluno;
   int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaOpcaoBusca, selecionaOpcaoRemocao, countAlunos = 0;
 
   while (1)
@@ -321,22 +376,26 @@ int main()
         printAllAlunos(countAlunos, alunos);
         break;
       case 2:
-        //
+        quickSortSobreNome(alunos, 0, countAlunos - 1);
+        printAllAlunos(countAlunos, alunos);
         break;
       case 3:
-        //
+        quickSortDataDeNascimento(alunos, 0, countAlunos - 1);
+        printAllAlunos(countAlunos, alunos);
         break;
       case 4:
-        //
+        quickSortProntuario(alunos, 0, countAlunos - 1);
+        printAllAlunos(countAlunos, alunos);
         break;
       case 5:
-        //
+        quickSortCurso(alunos, 0, countAlunos - 1);
+        printAllAlunos(countAlunos, alunos);
         break;
       case 0:
         printf("Voltando para o menu principal...\n\n");
         break;
-
       default:
+        printf("Comando inválido!\n");
         break;
       }
       break;
@@ -346,13 +405,31 @@ int main()
       switch (selecionaOpcaoBusca)
       {
       case 1:
-        /* code */
+        printf("Nome: ");
+        getchar();
+        fgets(buscaAluno.nome, TAM_nome, stdin);
+        printf("Sobrenome: ");
+        getchar();
+        fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
+        buscaAluno.nome[strcspn(buscaAluno.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+        buscaAluno.sobrenome[strcspn(buscaAluno.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+        if (buscarPorNome(alunos, &buscaAluno, countAlunos))
+        {
+          printAlunoEncontrado(buscaAluno);
+        }
+        else
+        {
+          printAlunoNaoEncontrado(buscaAluno);
+        }
         break;
       case 2:
         //
         break;
       case 0:
         printf("Voltando para o menu principal...\n\n");
+        break;
+      default:
+        printf("Comando inválido!\n");
         break;
       }
       break;
@@ -382,6 +459,9 @@ int main()
       case 0:
         printf("Voltando para o menu principal...\n\n");
         break;
+      default:
+        printf("Comando inválido!\n");
+        break;
       }
       break;
     case 0:
@@ -390,6 +470,7 @@ int main()
       exit(0);
       break;
     default:
+      printf("Comando inválido!\n");
       break;
     }
   }
