@@ -6,7 +6,7 @@
 #define TAM_sobrenome 50
 
 // STRUCT DATA
-typedef struct data_nascimento
+typedef struct data_nascimento //Nomendo o tipo de struct para data
 {
   int dia;
   int mes;
@@ -14,7 +14,7 @@ typedef struct data_nascimento
 } data;
 
 // STRUCT ALUNO
-typedef struct cadastra_aluno
+typedef struct cadastra_aluno //Nomendo o tipo de struct para aluno
 {
   char nome[TAM_nome];
   char sobrenome[TAM_sobrenome];
@@ -55,7 +55,7 @@ void cadastraAluno(aluno *alunos, int *numAlunos)
     alunos[*numAlunos].sobrenome[strcspn(alunos[*numAlunos].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
 
     *numAlunos += 1;
-    }
+  }
   else
   {
     printf("Número máximo de alunos cadastrados!");
@@ -63,27 +63,37 @@ void cadastraAluno(aluno *alunos, int *numAlunos)
 };
 
 // MENU PRINCIPAL
-void printMenu()
+void printMenuPrincipal()
 {
-  printf("---------------MENU---------------\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|                                                   MENU                                                    |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("1 - Cadastrar novo aluno\n");
   printf("2 - Ordenar cadastro de alunos\n");
   printf("3 - Buscar aluno\n");
   printf("4 - Remover aluno\n");
   printf("0 - Sair\n");
-  printf("----------------------------------\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
 // SUB MENU ORDENAÇAO DE ALUNOS
-void printSubMenu()
+void printSubMenuOrdenacao()
 {
-  printf("---------------ORDENAR ALUNOS POR---------------\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|                                             ORDENAR ALUNOS POR                                             |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("1 - Nome e sobrenome\n");
   printf("2 - Sobrenome e nome\n");
   printf("3 - Data de nascimento\n");
   printf("4 - Prontuario\n");
-  printf("0 - Curso\n");
-  printf("------------------------------------------------\n");
+  printf("5 - Curso\n");
+  printf("0 - Sair\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+};
+
+// SUB MENU BUCA POR ALUNOS
+void printSubMenuBusca(){
+
 };
 
 //IMPRIMIR TODOS OS ALUNOS
@@ -97,26 +107,93 @@ void printAllAlunos(int tamanhoVetor, aluno *alunos)
     printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[i].nome, alunos[i].sobrenome, alunos[i].dataNascimento.dia, alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano, alunos[i].prontuario, alunos[i].curso);
   }
   printf("-------------------------------------------------------------------------------------------------------------\n");
-}
+};
+
+// ORDENAR POSICOES
+// particionar
+int particionar(aluno *vetor, int ini, int fim)
+{
+  aluno pivo;
+  pivo = vetor[fim];
+
+  while (ini < fim)
+  {
+    while (ini < fim && strcmp(vetor[ini].nome, pivo.nome) <= 0)
+    {
+      ini++;
+    }
+    while (ini < fim && strcmp(vetor[ini].nome, pivo.nome) > 0)
+    {
+      fim--;
+    }
+    trocaPosicao(&vetor[ini], &vetor[fim]);
+  };
+};
+
+// trocar de posicao
+void trocaPosicao(aluno *a, aluno *b)
+{
+  aluno alunoAuxiliar = *a;
+  *a = *b;
+  *b = alunoAuxiliar;
+};
+
+// quicksort
+void quickSort(aluno *alunos, int posicaoInicial, int posicaoFinal)
+{
+  int posicaoAtual;
+  if (posicaoInicial < posicaoFinal)
+  {
+    posicaoAtual = particionar(alunos, posicaoInicial, posicaoFinal);
+    quickSort(alunos, posicaoInicial, posicaoAtual - 1);
+    quickSort(alunos, posicaoAtual, posicaoFinal);
+  };
+};
 
 int main()
 {
   aluno alunos[1000];
-  int selecionaOpcao, countAlunos = 0;
+  int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, countAlunos = 0;
 
   while (1)
   {
-    printMenu();
+    printMenuPrincipal();
     printf("Selecione uma opção: \n");
-    scanf("%d", &selecionaOpcao);
-    switch (selecionaOpcao)
+    scanf("%d", &selecionaOpcaoDashMenu);
+    switch (selecionaOpcaoDashMenu)
     {
     case 1:
       cadastraAluno(alunos, &countAlunos);
-      printMenu();
+      printMenuPrincipal();
       break;
     case 2:
-      printf("Tela de ordenação de alunos");
+      printSubMenuOrdenacao();
+      printf("Selecione uma opção: \n");
+      scanf("%d", &selecionaOpcaoOrdenacao);
+      switch (selecionaOpcaoOrdenacao)
+      {
+      case 1:
+        /* code */
+        break;
+      case 2:
+        //
+        break;
+      case 3:
+        //
+        break;
+      case 4:
+        //
+        break;
+      case 5:
+        //
+        break;
+      case 0:
+        printf("Voltando para o menu principal...\n\n");
+        break;
+
+      default:
+        break;
+      }
       break;
     case 3:
       printf("Tela de ordenação de pesquisa de alunos");
