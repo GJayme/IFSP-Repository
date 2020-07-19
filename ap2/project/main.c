@@ -137,6 +137,7 @@ void printAlunoEncontrado(aluno alunos)
 {
   alunos.nome[strcspn(alunos.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
   alunos.sobrenome[strcspn(alunos.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+  printf("%d", alunos.dataNascimento.dia);
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|          Nome        |          Sobrenome        | Dia | Mês |  Ano  |        Prontuario        |  CURSO  |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
@@ -239,11 +240,11 @@ int particionarProntuario(aluno *vetor, int posicaoInicial, int posicaoFinal)
 
   while (posicaoInicial < posicaoFinal)
   {
-    while (posicaoInicial < posicaoFinal && strcmp(vetor[posicaoInicial].prontuario, pivo.prontuario) <= 0)
+    while (posicaoInicial < posicaoFinal && (vetor[posicaoInicial].prontuario <= pivo.prontuario))
     {
       posicaoInicial++;
     }
-    while (posicaoInicial < posicaoFinal && strcmp(vetor[posicaoFinal].prontuario, pivo.prontuario) > 0)
+    while (posicaoInicial < posicaoFinal && (vetor[posicaoFinal].prontuario > pivo.prontuario))
     {
       posicaoFinal--;
     }
@@ -332,22 +333,30 @@ void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFin
 
 // BUSCA DE ALUNO:
 // BUSCA POR NOME:
-int buscarPorNome(aluno *alunos, aluno *buscarAluno, int numAlunos)
+void buscarPorNome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
   {
-    if (!strcmp(alunos[i].nome, (*buscarAluno).nome) & !strcmp(alunos[i].sobrenome, (*buscarAluno).sobrenome))
+    if (!strcmp(alunos[i].nome, buscarAluno.nome) && !strcmp(alunos[i].sobrenome, buscarAluno.sobrenome))
     {
-      (*buscarAluno).dataNascimento.dia = alunos[i].dataNascimento.dia;
-      (*buscarAluno).dataNascimento.mes = alunos[i].dataNascimento.mes;
-      (*buscarAluno).dataNascimento.ano = alunos[i].dataNascimento.ano;
-      (*buscarAluno).prontuario = alunos[i].prontuario;
-      strcpy((*buscarAluno).curso, alunos[i].curso);
-      return 1;
+      printAlunoEncontrado(alunos[i]);
+      return;
     }
   }
-
-  return 0;
+  printAlunoNaoEncontrado(buscarAluno);
+}
+// BUSCA POR PRONTUARIO:
+void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++)
+  {
+    if (alunos[i].prontuario == buscarAluno.prontuario)
+    {
+      printAlunoEncontrado(alunos[i]);
+      return;
+    }
+  }
+  printf("Prontuário não cadastrado!");
 }
 
 int main()
@@ -413,17 +422,14 @@ int main()
 
         printf("Sobrenome: ");
         fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
-        if (buscarPorNome(alunos, &buscaAluno, countAlunos))
-        {
-          printAlunoEncontrado(buscaAluno);
-        }
-        else
-        {
-          printAlunoNaoEncontrado(buscaAluno);
-        }
+
+        buscarPorNome(alunos, buscaAluno, countAlunos);
         break;
       case 2:
-        //
+        printf("Prontuário: ");
+        scanf("%d", &buscaAluno.prontuario);
+
+        bucarPorProntuario(alunos, buscaAluno, countAlunos);
         break;
       case 0:
         printf("Voltando para o menu principal...\n\n");
