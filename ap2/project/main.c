@@ -105,12 +105,12 @@ void printSubMenuBusca()
 };
 
 // WARNING - ALUNO NÃO ENCONTRADO
-void printAlunoNaoEncontrado(aluno AlunoNaoEncontrado)
+void printAlunoNaoEncontrado(int i, aluno *AlunoNaoEncontrado)
 {
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|                                                   AVISO                                                   |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
-  printf("O aluno %s não foi encontrado!\n", AlunoNaoEncontrado.nome);
+  printf("O aluno %s %s não foi encontrado!\n", AlunoNaoEncontrado[i].nome, AlunoNaoEncontrado[i].sobrenome);
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
@@ -144,12 +144,14 @@ void printAllAlunos(int tamanhoVetor, aluno *alunos)
 };
 
 //IMPRIMIR ALUNO ENCONTRADO:
-void printAlunoEncontrado(aluno alunoEncontrado)
+void printAlunoEncontrado(int indiceAluno, aluno *alunos)
 {
+  alunos[indiceAluno].nome[strcspn(alunos[indiceAluno].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+  alunos[indiceAluno].sobrenome[strcspn(alunos[indiceAluno].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|          Nome        |          Sobrenome        | Dia | Mês |  Ano  |        Prontuario        |  CURSO  |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
-  printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunoEncontrado.nome, alunoEncontrado.sobrenome, alunoEncontrado.dataNascimento.dia, alunoEncontrado.dataNascimento.mes, alunoEncontrado.dataNascimento.ano, alunoEncontrado.prontuario, alunoEncontrado.curso);
+  printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[indiceAluno].nome, alunos[indiceAluno].sobrenome, alunos[indiceAluno].dataNascimento.dia, alunos[indiceAluno].dataNascimento.mes, alunos[indiceAluno].dataNascimento.ano, alunos[indiceAluno].prontuario, alunos[indiceAluno].curso);
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
@@ -329,19 +331,17 @@ void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFin
 
 // BUSCA DE ALUNO:
 // BUSCA POR NOME:
-int buscarPorNome(aluno *alunos, aluno *buscar, int numAlunos)
+int buscarPorNome(aluno *alunos, aluno *buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
   {
-    if (strcmp(alunos[i].nome, buscar[i].nome) && strcmp(alunos[i].sobrenome, buscar[i].sobrenome))
+    if (!strcmp(alunos[i].nome, (*buscarAluno).nome) && !strcmp(alunos[i].sobrenome, (*buscarAluno).sobrenome))
     {
-      buscar[i].dataNascimento.dia = alunos[i].dataNascimento.dia;
-      buscar[i].dataNascimento.dia = alunos[i].dataNascimento.dia;
-      buscar[i].dataNascimento.dia = alunos[i].dataNascimento.dia;
-      buscar[i].prontuario = alunos[i].prontuario;
-      strcpy(buscar[i].curso, alunos[i].curso);
-
-      return 1;
+      printAlunoEncontrado(i, alunos);
+    }
+    else
+    {
+      printAlunoNaoEncontrado(i, alunos);
     }
   }
 
@@ -408,19 +408,11 @@ int main()
         printf("Nome: ");
         getchar();
         fgets(buscaAluno.nome, TAM_nome, stdin);
+
         printf("Sobrenome: ");
         getchar();
         fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
-        buscaAluno.nome[strcspn(buscaAluno.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-        buscaAluno.sobrenome[strcspn(buscaAluno.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
-        if (buscarPorNome(alunos, &buscaAluno, countAlunos))
-        {
-          printAlunoEncontrado(buscaAluno);
-        }
-        else
-        {
-          printAlunoNaoEncontrado(buscaAluno);
-        }
+        buscarPorNome(alunos, &buscaAluno, countAlunos);
         break;
       case 2:
         //
