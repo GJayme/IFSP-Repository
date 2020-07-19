@@ -52,9 +52,6 @@ void cadastraAluno(aluno *alunos, int *numAlunos)
     getchar();
     fgets(alunos[*numAlunos].curso, 4, stdin);
 
-    alunos[*numAlunos].nome[strcspn(alunos[*numAlunos].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-    alunos[*numAlunos].sobrenome[strcspn(alunos[*numAlunos].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
-
     *numAlunos += 1;
   }
   else
@@ -104,16 +101,6 @@ void printSubMenuBusca()
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
-// WARNING - ALUNO NÃO ENCONTRADO
-void printAlunoNaoEncontrado(int i, aluno *AlunoNaoEncontrado)
-{
-  printf("-------------------------------------------------------------------------------------------------------------\n");
-  printf("|                                                   AVISO                                                   |\n");
-  printf("-------------------------------------------------------------------------------------------------------------\n");
-  printf("O aluno %s %s não foi encontrado!\n", AlunoNaoEncontrado[i].nome, AlunoNaoEncontrado[i].sobrenome);
-  printf("-------------------------------------------------------------------------------------------------------------\n");
-};
-
 // SUB MENU REMOCÃO DE ALUNOS
 void printSubMenuRemocao()
 {
@@ -138,20 +125,34 @@ void printAllAlunos(int tamanhoVetor, aluno *alunos)
   printf("-------------------------------------------------------------------------------------------------------------\n");
   for (int i = 0; i < tamanhoVetor; i++)
   {
+    alunos[i].nome[strcspn(alunos[i].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+    alunos[i].sobrenome[strcspn(alunos[i].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
     printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[i].nome, alunos[i].sobrenome, alunos[i].dataNascimento.dia, alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano, alunos[i].prontuario, alunos[i].curso);
   }
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
 //IMPRIMIR ALUNO ENCONTRADO:
-void printAlunoEncontrado(int indiceAluno, aluno *alunos)
+void printAlunoEncontrado(aluno alunos)
 {
-  alunos[indiceAluno].nome[strcspn(alunos[indiceAluno].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-  alunos[indiceAluno].sobrenome[strcspn(alunos[indiceAluno].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+  alunos.nome[strcspn(alunos.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+  alunos.sobrenome[strcspn(alunos.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|          Nome        |          Sobrenome        | Dia | Mês |  Ano  |        Prontuario        |  CURSO  |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
-  printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[indiceAluno].nome, alunos[indiceAluno].sobrenome, alunos[indiceAluno].dataNascimento.dia, alunos[indiceAluno].dataNascimento.mes, alunos[indiceAluno].dataNascimento.ano, alunos[indiceAluno].prontuario, alunos[indiceAluno].curso);
+  printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos.nome, alunos.sobrenome, alunos.dataNascimento.dia, alunos.dataNascimento.mes, alunos.dataNascimento.ano, alunos.prontuario, alunos.curso);
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+};
+
+// WARNING - ALUNO NÃO ENCONTRADO
+void printAlunoNaoEncontrado(aluno AlunoNaoEncontrado)
+{
+  AlunoNaoEncontrado.nome[strcspn(AlunoNaoEncontrado.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+  AlunoNaoEncontrado.sobrenome[strcspn(AlunoNaoEncontrado.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|                                                   AVISO                                                   |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("O aluno %s %s não foi encontrado!\n", AlunoNaoEncontrado.nome, AlunoNaoEncontrado.sobrenome);
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
@@ -335,13 +336,14 @@ int buscarPorNome(aluno *alunos, aluno *buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
   {
-    if (!strcmp(alunos[i].nome, (*buscarAluno).nome) && !strcmp(alunos[i].sobrenome, (*buscarAluno).sobrenome))
+    if (!strcmp(alunos[i].nome, (*buscarAluno).nome) & !strcmp(alunos[i].sobrenome, (*buscarAluno).sobrenome))
     {
-      printAlunoEncontrado(i, alunos);
-    }
-    else
-    {
-      printAlunoNaoEncontrado(i, alunos);
+      (*buscarAluno).dataNascimento.dia = alunos[i].dataNascimento.dia;
+      (*buscarAluno).dataNascimento.mes = alunos[i].dataNascimento.mes;
+      (*buscarAluno).dataNascimento.ano = alunos[i].dataNascimento.ano;
+      (*buscarAluno).prontuario = alunos[i].prontuario;
+      strcpy((*buscarAluno).curso, alunos[i].curso);
+      return 1;
     }
   }
 
@@ -410,9 +412,15 @@ int main()
         fgets(buscaAluno.nome, TAM_nome, stdin);
 
         printf("Sobrenome: ");
-        getchar();
         fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
-        buscarPorNome(alunos, &buscaAluno, countAlunos);
+        if (buscarPorNome(alunos, &buscaAluno, countAlunos))
+        {
+          printAlunoEncontrado(buscaAluno);
+        }
+        else
+        {
+          printAlunoNaoEncontrado(buscaAluno);
+        }
         break;
       case 2:
         //
