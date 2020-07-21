@@ -359,6 +359,95 @@ void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
   printf("Prontuário não cadastrado!");
 }
 
+// REMOVER ALUNOS:
+// NOME E SOBRENOME:
+void removeAlunoNomeSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  {
+    if (!strcmp(alunos[i].nome, buscarAluno.nome) && !strcmp(alunos[i].sobrenome, buscarAluno.sobrenome)) // Encontrou o aluno
+    {
+      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      {
+        alunos[j] = alunos[j + 1];
+      }
+      numAlunos--; // Remove um aluno do total
+      printAllAlunos(numAlunos, alunos);
+    }
+    else
+    {
+      printf("Nenhum aluno chamado %s %s não foi encontrado!", buscarAluno.nome, buscarAluno.sobrenome);
+    }
+  }
+}
+
+// NOME:
+void removeAlunoNome(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  {
+    if (!strcmp(alunos[i].nome, buscarAluno.nome)) // Encontrou o aluno
+    {
+      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      {
+        alunos[j] = alunos[j + 1];
+      }
+      numAlunos--; // Remove um aluno do total
+      printAllAlunos(numAlunos, alunos);
+    }
+    else
+    {
+      printf("Nenhum aluno chamado %s não foi encontrado!", buscarAluno.nome);
+    }
+  }
+}
+
+// SOBRENOME:
+void removeAlunoSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  {
+    if (!strcmp(alunos[i].sobrenome, buscarAluno.sobrenome)) // Encontrou o aluno
+    {
+      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      {
+        alunos[j] = alunos[j + 1];
+      }
+      numAlunos--; // Remove um aluno do total
+      printAllAlunos(numAlunos, alunos);
+    }
+    else
+    {
+      printf("Nenhum aluno com sobreno de %s não foi encontrado!", buscarAluno.sobrenome);
+    }
+  }
+}
+
+// PRONTUÁRIO:
+
+// DATA DE NASCIMENTO:
+
+// CURSO
+void removeAlunoCurso(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  {
+    if (!strcmp(alunos[i].curso, buscarAluno.curso)) // Encontrou o aluno
+    {
+      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      {
+        alunos[j] = alunos[j + 1];
+      }
+      numAlunos--; // Remove um aluno do total
+      printAllAlunos(numAlunos, alunos);
+    }
+    else
+    {
+      printf("Nenhum aluno no curso de %s não foi encontrado!", buscarAluno.curso);
+    }
+  }
+}
+
 int main()
 {
   aluno alunos[1000];
@@ -442,16 +531,27 @@ int main()
     case 4:
       printSubMenuRemocao();
       scanf("%d", &selecionaOpcaoRemocao);
-      switch (selecionaOpcaoBusca)
+      switch (selecionaOpcaoRemocao)
       {
       case 1:
-        /* code */
+        printf("Nome: ");
+        getchar();
+        fgets(buscaAluno.nome, TAM_nome, stdin);
+
+        printf("Sobrenome: ");
+        fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
+        removeAlunoNomeSobrenome(alunos, buscaAluno, countAlunos);
         break;
       case 2:
-        //
+        printf("Nome: ");
+        getchar();
+        fgets(buscaAluno.nome, TAM_nome, stdin);
+        removeAlunoNome(alunos, buscaAluno, countAlunos);
         break;
       case 3:
-        /* code */
+        printf("Sobrenome: ");
+        fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
+        removeAlunoSobrenome(alunos, buscaAluno, countAlunos);
         break;
       case 4:
         //
@@ -460,7 +560,9 @@ int main()
         /* code */
         break;
       case 6:
-        /* code */
+        printf("Curso: ");
+        fgets(buscaAluno.curso, 4, stdin);
+        removeAlunoCurso(alunos, buscaAluno, countAlunos);
         break;
       case 0:
         printf("Voltando para o menu principal...\n\n");
