@@ -306,14 +306,16 @@ int particionarDataNascimento(aluno *vetor, int posicaoInicial, int posicaoFinal
 
   while (posicaoInicial < posicaoFinal)
   {
-    while (posicaoInicial < posicaoFinal &&
-           (vetor[posicaoInicial].dataNascimento.ano * 10000 + vetor[posicaoInicial].dataNascimento.mes * 100 + vetor[posicaoInicial].dataNascimento.dia) <= //CONVERTENDO AS DATAS EM EM INT E SOMANDO PARA PODER EFETUAR AS COMPARAÇÕES
-               (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
+    //CONVERTENDO AS DATAS EM EM INT E SOMANDO PARA PODER EFETUAR AS COMPARAÇÕES
+    while (posicaoInicial < posicaoFinal && (vetor[posicaoInicial].dataNascimento.ano * 10000 + vetor[posicaoInicial].dataNascimento.mes * 100 + vetor[posicaoInicial].dataNascimento.dia) <= (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
+    {
       posicaoInicial++;
-    while (posicaoInicial < posicaoFinal &&
-           (vetor[posicaoFinal].dataNascimento.ano * 10000 + vetor[posicaoFinal].dataNascimento.mes * 100 + vetor[posicaoFinal].dataNascimento.dia) >
-               (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
+    };
+
+    while (posicaoInicial < posicaoFinal && (vetor[posicaoFinal].dataNascimento.ano * 10000 + vetor[posicaoFinal].dataNascimento.mes * 100 + vetor[posicaoFinal].dataNascimento.dia) > (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
+    {
       posicaoFinal--;
+    }
     trocaPosicao(&vetor[posicaoInicial], &vetor[posicaoFinal]);
   }
   return posicaoInicial;
@@ -360,7 +362,7 @@ void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
 }
 
 // REMOVER ALUNOS:
-// NOME E SOBRENOME:
+// REMOVER POR NOME E SOBRENOME:
 void removeAlunoNomeSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
@@ -373,6 +375,7 @@ void removeAlunoNomeSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
       }
       numAlunos--; // Remove um aluno do total
       printAllAlunos(numAlunos, alunos);
+      return;
     }
     else
     {
@@ -381,7 +384,7 @@ void removeAlunoNomeSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
   }
 }
 
-// NOME:
+// REMOVER POR NOME:
 void removeAlunoNome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
@@ -394,6 +397,7 @@ void removeAlunoNome(aluno *alunos, aluno buscarAluno, int numAlunos)
       }
       numAlunos--; // Remove um aluno do total
       printAllAlunos(numAlunos, alunos);
+      return;
     }
     else
     {
@@ -402,7 +406,7 @@ void removeAlunoNome(aluno *alunos, aluno buscarAluno, int numAlunos)
   }
 }
 
-// SOBRENOME:
+// REMOVER POR SOBRENOME SOBRENOME:
 void removeAlunoSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
@@ -415,17 +419,58 @@ void removeAlunoSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
       }
       numAlunos--; // Remove um aluno do total
       printAllAlunos(numAlunos, alunos);
+      return;
     }
     else
     {
-      printf("Nenhum aluno com sobreno de %s não foi encontrado!", buscarAluno.sobrenome);
+      printf("Nenhum aluno com sobrenome de %s não foi encontrado!", buscarAluno.sobrenome);
     }
   }
 }
 
-// PRONTUÁRIO:
+// REMOVER POR PRONTUÁRIO:
+void removerAlunoPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++)
+  {
+    if (alunos[i].prontuario == buscarAluno.prontuario)
+    {
+      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      {
+        alunos[j] = alunos[j + 1];
+      }
+      numAlunos--; // Remove um aluno do total
+      printAllAlunos(numAlunos, alunos);
+      return;
+    }
+    else
+    {
+      printf("Nenhum aluno o prontuário %d não foi encontrado!", buscarAluno.prontuario);
+    }
+  }
+}
 
-// DATA DE NASCIMENTO:
+// REMOVER POR DATA DE NASCIMENTO:
+void removerAlunoPorDataNascimento(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  {
+    if ((alunos[i].dataNascimento.ano * 10000 + alunos[i].dataNascimento.mes * 100 + alunos[i].dataNascimento.dia) == (buscarAluno.dataNascimento.ano * 10000 + buscarAluno.dataNascimento.mes * 100 + buscarAluno.dataNascimento.dia)) // Encontrou o aluno
+    {
+      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      {
+        alunos[j] = alunos[j + 1];
+      }
+      numAlunos--; // Remove um aluno do total
+      printAllAlunos(numAlunos, alunos);
+      return;
+    }
+    else
+    {
+      printf("Nenhum aluno com data de nascimento de %d-%d-%d não foi encontrado!", buscarAluno.dataNascimento.dia, buscarAluno.dataNascimento.mes, buscarAluno.dataNascimento.ano);
+    }
+  }
+}
 
 // CURSO
 void removeAlunoCurso(aluno *alunos, aluno buscarAluno, int numAlunos)
@@ -440,6 +485,7 @@ void removeAlunoCurso(aluno *alunos, aluno buscarAluno, int numAlunos)
       }
       numAlunos--; // Remove um aluno do total
       printAllAlunos(numAlunos, alunos);
+      return;
     }
     else
     {
@@ -554,13 +600,25 @@ int main()
         removeAlunoSobrenome(alunos, buscaAluno, countAlunos);
         break;
       case 4:
-        //
+        printf("Número do prontuario ");
+        scanf("%d", &buscaAluno.prontuario);
+        removerAlunoPorProntuario(alunos, buscaAluno, countAlunos);
         break;
       case 5:
-        /* code */
+        printf("Dia de nascimento: ");
+        scanf("%d", &buscaAluno.dataNascimento.dia);
+
+        printf("Mês de nascimento: ");
+        scanf("%d", &buscaAluno.dataNascimento.mes);
+
+        printf("Ano de nascimento: ");
+        scanf("%d", &buscaAluno.dataNascimento.ano);
+
+        removerAlunoPorDataNascimento(alunos, buscaAluno, countAlunos);
         break;
       case 6:
         printf("Curso: ");
+        getchar();
         fgets(buscaAluno.curso, 4, stdin);
         removeAlunoCurso(alunos, buscaAluno, countAlunos);
         break;
