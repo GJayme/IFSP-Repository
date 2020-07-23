@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #define TAM_nome 50
 #define TAM_sobrenome 50
@@ -30,26 +29,31 @@ void cadastraAluno(aluno *alunos, int *numAlunos)
   {
     printf("Bem vindo a tela de cadastro de aluno.\n");
     printf("Nome: ");
-    getchar();
+    fflush(stdin);
     fgets(alunos[*numAlunos].nome, TAM_nome, stdin);
 
     printf("Sobrenome: ");
+    fflush(stdin);
     fgets(alunos[*numAlunos].sobrenome, TAM_sobrenome, stdin);
 
     printf("Dia de nascimento: ");
+    fflush(stdin);
     scanf("%d", &alunos[*numAlunos].dataNascimento.dia);
 
     printf("Mês de nascimento: ");
+    fflush(stdin);
     scanf("%d", &alunos[*numAlunos].dataNascimento.mes);
 
     printf("Ano de nascimento: ");
+    fflush(stdin);
     scanf("%d", &alunos[*numAlunos].dataNascimento.ano);
 
     printf("Número do prontuario ");
+    fflush(stdin);
     scanf("%d", &alunos[*numAlunos].prontuario);
 
     printf("Curso: ");
-    getchar();
+    fflush(stdin);
     fgets(alunos[*numAlunos].curso, 4, stdin);
 
     alunos[*numAlunos].nome[strcspn(alunos[*numAlunos].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
@@ -161,20 +165,36 @@ void trocaPosicao(aluno *a, aluno *b)
   *a = *b;
   *b = alunoAuxiliar;
 };
+// FUNCAO CONCAT:
+void concat(char destino[], char primeiro[], char segundo[])
+{
+  strcpy(destino, primeiro);
+
+  strcat(destino, segundo);
+}
 
 // PARTICIONANDO NOMES:
 int particionarNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
 {
   aluno pivo;
   pivo = alunos[posicaoFinal];
+  int tamanho = TAM_nome + TAM_sobrenome;
+
+  char nomeSobrenomeInicial[tamanho];
+  char nomeSobrenomeFinal[tamanho];
+  char pivoNomeSobrenome[tamanho];
 
   while (posicaoInicial < posicaoFinal)
   {
-    while (posicaoInicial < posicaoFinal && strcmp(alunos[posicaoInicial].nome, pivo.nome) <= 0)
+    concat(nomeSobrenomeInicial, alunos[posicaoInicial].nome, alunos[posicaoInicial].sobrenome);
+    concat(nomeSobrenomeFinal, alunos[posicaoFinal].nome, alunos[posicaoFinal].sobrenome);
+    concat(pivoNomeSobrenome, pivo.nome, pivo.sobrenome);
+
+    while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeInicial, pivoNomeSobrenome) <= 0)
     {
       posicaoInicial++;
     }
-    while (posicaoInicial < posicaoFinal && strcmp(alunos[posicaoFinal].nome, pivo.nome) > 0)
+    while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeFinal, pivoNomeSobrenome) > 0)
     {
       posicaoFinal--;
     }
@@ -198,16 +218,25 @@ void quickSortNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
 // PARTICIPAR SOBRENOME
 int particionarSobrenome(aluno *vetor, int posicaoInicial, int posicaoFinal)
 {
+  int tamanho = TAM_nome + TAM_sobrenome;
   aluno pivo;
   pivo = vetor[posicaoFinal];
 
+  char sobrenomeNomeInicial[tamanho];
+  char sobrenomeNomeFinal[tamanho];
+  char pivoSobrenomeNome[tamanho];
+
   while (posicaoInicial < posicaoFinal)
   {
-    while (posicaoInicial < posicaoFinal && strcmp(vetor[posicaoInicial].sobrenome, pivo.sobrenome) <= 0)
+    concat(sobrenomeNomeInicial, vetor[posicaoInicial].sobrenome, vetor[posicaoInicial].nome);
+    concat(sobrenomeNomeFinal, vetor[posicaoFinal].sobrenome, vetor[posicaoFinal].nome);
+    concat(pivoSobrenomeNome, pivo.sobrenome, pivo.nome);
+
+    while (posicaoInicial < posicaoFinal && strcmp(sobrenomeNomeInicial, pivoSobrenomeNome) <= 0)
     {
       posicaoInicial++;
     }
-    while (posicaoInicial < posicaoFinal && strcmp(vetor[posicaoFinal].sobrenome, pivo.sobrenome) > 0)
+    while (posicaoInicial < posicaoFinal && strcmp(sobrenomeNomeFinal, pivoSobrenomeNome) > 0)
     {
       posicaoFinal--;
     }
@@ -615,10 +644,11 @@ int main()
       {
       case 1:
         printf("Nome: ");
-        getchar();
+        fflush(stdin);
         fgets(buscaAluno.nome, TAM_nome, stdin);
 
         printf("Sobrenome: ");
+        fflush(stdin);
         fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
 
         buscaAluno.nome[strcspn(buscaAluno.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
@@ -660,7 +690,7 @@ int main()
       {
       case 1:
         printf("Nome: ");
-        getchar();
+        fflush(stdin);
         fgets(buscaAluno.nome, TAM_nome, stdin);
 
         printf("Sobrenome: ");
@@ -669,35 +699,40 @@ int main()
         break;
       case 2:
         printf("Nome: ");
-        getchar();
+        fflush(stdin);
         fgets(buscaAluno.nome, TAM_nome, stdin);
         removeAlunoNome(alunos, buscaAluno, countAlunos);
         break;
       case 3:
         printf("Sobrenome: ");
+        fflush(stdin);
         fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
         removeAlunoSobrenome(alunos, buscaAluno, countAlunos);
         break;
       case 4:
         printf("Número do prontuario ");
+        fflush(stdin);
         scanf("%d", &buscaAluno.prontuario);
         removerAlunoPorProntuario(alunos, buscaAluno, countAlunos);
         break;
       case 5:
         printf("Dia de nascimento: ");
+        fflush(stdin);
         scanf("%d", &buscaAluno.dataNascimento.dia);
 
         printf("Mês de nascimento: ");
+        fflush(stdin);
         scanf("%d", &buscaAluno.dataNascimento.mes);
 
         printf("Ano de nascimento: ");
+        fflush(stdin);
         scanf("%d", &buscaAluno.dataNascimento.ano);
 
         removerAlunoPorDataNascimento(alunos, buscaAluno, countAlunos);
         break;
       case 6:
         printf("Curso: ");
-        getchar();
+        fflush(stdin);
         fgets(buscaAluno.curso, 4, stdin);
         removeAlunoCurso(alunos, buscaAluno, countAlunos);
         break;
