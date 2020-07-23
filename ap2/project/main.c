@@ -52,6 +52,9 @@ void cadastraAluno(aluno *alunos, int *numAlunos)
     getchar();
     fgets(alunos[*numAlunos].curso, 4, stdin);
 
+    alunos[*numAlunos].nome[strcspn(alunos[*numAlunos].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+    alunos[*numAlunos].sobrenome[strcspn(alunos[*numAlunos].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+
     *numAlunos += 1;
   }
   else
@@ -125,8 +128,6 @@ void printAllAlunos(int tamanhoVetor, aluno *alunos)
   printf("-------------------------------------------------------------------------------------------------------------\n");
   for (int i = 0; i < tamanhoVetor; i++)
   {
-    alunos[i].nome[strcspn(alunos[i].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-    alunos[i].sobrenome[strcspn(alunos[i].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
     printf("|  %-18s  | %-25s | %-3d | %-3d | %-5d | %-24d | %-7s |\n", alunos[i].nome, alunos[i].sobrenome, alunos[i].dataNascimento.dia, alunos[i].dataNascimento.mes, alunos[i].dataNascimento.ano, alunos[i].prontuario, alunos[i].curso);
   }
   printf("-------------------------------------------------------------------------------------------------------------\n");
@@ -135,9 +136,6 @@ void printAllAlunos(int tamanhoVetor, aluno *alunos)
 //IMPRIMIR ALUNO ENCONTRADO:
 void printAlunoEncontrado(aluno alunos)
 {
-  alunos.nome[strcspn(alunos.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-  alunos.sobrenome[strcspn(alunos.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
-  printf("%d", alunos.dataNascimento.dia);
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|          Nome        |          Sobrenome        | Dia | Mês |  Ano  |        Prontuario        |  CURSO  |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
@@ -148,8 +146,6 @@ void printAlunoEncontrado(aluno alunos)
 // WARNING - ALUNO NÃO ENCONTRADO
 void printAlunoNaoEncontrado(aluno AlunoNaoEncontrado)
 {
-  AlunoNaoEncontrado.nome[strcspn(AlunoNaoEncontrado.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-  AlunoNaoEncontrado.sobrenome[strcspn(AlunoNaoEncontrado.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
   printf("-------------------------------------------------------------------------------------------------------------\n");
   printf("|                                                   AVISO                                                   |\n");
   printf("-------------------------------------------------------------------------------------------------------------\n");
@@ -334,7 +330,7 @@ void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFin
 };
 
 // BUSCA DE ALUNO:
-// BUSCA POR NOME:
+// BUSCA POR NOME E SOBRENOME LINEAR:
 void buscarPorNome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
@@ -347,7 +343,33 @@ void buscarPorNome(aluno *alunos, aluno buscarAluno, int numAlunos)
   }
   printAlunoNaoEncontrado(buscarAluno);
 }
-// BUSCA POR PRONTUARIO:
+
+// BUSCA POR NOME E SOBRENOME BINÁRIA:
+void buscarPorNomeBinario(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  int ini = 0;
+  int fim = numAlunos - 1;
+  int meio;
+  while (ini <= fim)
+  {
+    meio = (ini <= fim) / 2;
+    if (!strcmp(buscarAluno.nome, alunos[meio].nome) && !strcmp(buscarAluno.sobrenome, alunos[meio].sobrenome))
+    {
+      return printAlunoEncontrado(alunos[meio]);
+    }
+    if ((strcmp(buscarAluno.nome, alunos[meio].nome) == -1) && (strcmp(buscarAluno.sobrenome, alunos[meio].sobrenome) == -1))
+    {
+      fim = meio - 1;
+    }
+    else
+    {
+      ini = meio + 1;
+    }
+    printf("Aluno não encontrado!");
+  }
+}
+
+// BUSCA POR PRONTUARIO LINEAR:
 void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
@@ -359,6 +381,31 @@ void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
     }
   }
   printf("Prontuário não cadastrado!");
+}
+
+// BUSCA POR PRONTUARIO LINEAR:
+void buscarPorProntuarioBinario(aluno *alunos, aluno buscarAluno, int numAlunos)
+{
+  int ini = 0;
+  int fim = numAlunos - 1;
+  int meio;
+  while (ini <= fim)
+  {
+    meio = (ini <= fim) / 2;
+    if (buscarAluno.prontuario == alunos[meio].prontuario)
+    {
+      return printAlunoEncontrado(alunos[meio]);
+    }
+    if (buscarAluno.prontuario < alunos[meio].prontuario)
+    {
+      fim = meio - 1;
+    }
+    else
+    {
+      ini = meio + 1;
+    }
+    printf("Prontuário não encontrado!");
+  }
 }
 
 // REMOVER ALUNOS:
@@ -499,6 +546,7 @@ int main()
   aluno alunos[1000];
   aluno buscaAluno;
   int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaOpcaoBusca, selecionaOpcaoRemocao, countAlunos = 0;
+  int validaOrdenacaoNome = 0, validaOrdenacaoSobreNome = 0, validaOrdenacaoProntuario = 0;
 
   while (1)
   {
@@ -520,22 +568,37 @@ int main()
       case 1:
         quickSortNome(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
+        validaOrdenacaoNome = 1;
+        validaOrdenacaoSobreNome = 0;
+        validaOrdenacaoProntuario = 0;
         break;
       case 2:
         quickSortSobreNome(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
+        validaOrdenacaoSobreNome = 1;
+        validaOrdenacaoNome = 0;
+        validaOrdenacaoProntuario = 0;
         break;
       case 3:
         quickSortDataDeNascimento(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
+        validaOrdenacaoNome = 0;
+        validaOrdenacaoSobreNome = 0;
+        validaOrdenacaoProntuario = 0;
         break;
       case 4:
         quickSortProntuario(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
+        validaOrdenacaoProntuario = 1;
+        validaOrdenacaoSobreNome = 0;
+        validaOrdenacaoNome = 0;
         break;
       case 5:
         quickSortCurso(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
+        validaOrdenacaoNome = 0;
+        validaOrdenacaoSobreNome = 0;
+        validaOrdenacaoProntuario = 0;
         break;
       case 0:
         printf("Voltando para o menu principal...\n\n");
@@ -558,13 +621,29 @@ int main()
         printf("Sobrenome: ");
         fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
 
-        buscarPorNome(alunos, buscaAluno, countAlunos);
+        buscaAluno.nome[strcspn(buscaAluno.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
+        buscaAluno.sobrenome[strcspn(buscaAluno.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+
+        if (validaOrdenacaoNome && validaOrdenacaoSobreNome)
+        {
+          buscarPorNomeBinario(alunos, buscaAluno, countAlunos);
+        }
+        else
+        {
+          buscarPorNome(alunos, buscaAluno, countAlunos);
+        }
         break;
       case 2:
         printf("Prontuário: ");
         scanf("%d", &buscaAluno.prontuario);
-
-        bucarPorProntuario(alunos, buscaAluno, countAlunos);
+        if (validaOrdenacaoProntuario)
+        {
+          buscarPorProntuarioBinario(alunos, buscaAluno, countAlunos);
+        }
+        else
+        {
+          bucarPorProntuario(alunos, buscaAluno, countAlunos);
+        }
         break;
       case 0:
         printf("Voltando para o menu principal...\n\n");
