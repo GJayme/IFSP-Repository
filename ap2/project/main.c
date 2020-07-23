@@ -6,7 +6,7 @@
 #define TAM_sobrenome 50
 
 // STRUCT DATA
-typedef struct data_nascimento //Nomendo o tipo de struct para data
+typedef struct data_nascimento //Nomeando o tipo de struct para data
 {
   int dia;
   int mes;
@@ -14,7 +14,7 @@ typedef struct data_nascimento //Nomendo o tipo de struct para data
 } data;
 
 // STRUCT ALUNO
-typedef struct cadastra_aluno //Nomendo o tipo de struct para aluno
+typedef struct cadastra_aluno //Nomeando o tipo de struct para aluno
 {
   char nome[TAM_nome];
   char sobrenome[TAM_sobrenome];
@@ -30,11 +30,11 @@ void cadastraAluno(aluno *alunos, int *numAlunos)
     printf("Bem vindo a tela de cadastro de aluno.\n");
     printf("Nome: ");
     fflush(stdin);
-    fgets(alunos[*numAlunos].nome, TAM_nome, stdin);
+    scanf("%s", &alunos[*numAlunos].nome);
 
     printf("Sobrenome: ");
     fflush(stdin);
-    fgets(alunos[*numAlunos].sobrenome, TAM_sobrenome, stdin);
+    scanf("%s", &alunos[*numAlunos].sobrenome);
 
     printf("Dia de nascimento: ");
     fflush(stdin);
@@ -54,10 +54,7 @@ void cadastraAluno(aluno *alunos, int *numAlunos)
 
     printf("Curso: ");
     fflush(stdin);
-    fgets(alunos[*numAlunos].curso, 4, stdin);
-
-    alunos[*numAlunos].nome[strcspn(alunos[*numAlunos].nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-    alunos[*numAlunos].sobrenome[strcspn(alunos[*numAlunos].sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+    scanf("%s", &alunos[*numAlunos].curso);
 
     *numAlunos += 1;
   }
@@ -165,7 +162,7 @@ void trocaPosicao(aluno *a, aluno *b)
   *a = *b;
   *b = alunoAuxiliar;
 };
-// FUNCAO CONCAT:
+// FUNÇÃO CONCAT:
 void concat(char destino[], char primeiro[], char segundo[])
 {
   strcpy(destino, primeiro);
@@ -398,7 +395,7 @@ void buscarPorNomeBinario(aluno *alunos, aluno buscarAluno, int numAlunos)
   }
 }
 
-// BUSCA POR PRONTUARIO LINEAR:
+// BUSCA POR PRONTUÁRIO LINEAR:
 void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
@@ -412,7 +409,7 @@ void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
   printf("Prontuário não cadastrado!");
 }
 
-// BUSCA POR PRONTUARIO LINEAR:
+// BUSCA POR PRONTUÁRIO LINEAR:
 void buscarPorProntuarioBinario(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   int ini = 0;
@@ -645,14 +642,11 @@ int main()
       case 1:
         printf("Nome: ");
         fflush(stdin);
-        fgets(buscaAluno.nome, TAM_nome, stdin);
+        scanf("%s", &buscaAluno.nome);
 
         printf("Sobrenome: ");
         fflush(stdin);
-        fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
-
-        buscaAluno.nome[strcspn(buscaAluno.nome, "\n")] = 0;           //tirando a quebra de linha que o fgets coloca
-        buscaAluno.sobrenome[strcspn(buscaAluno.sobrenome, "\n")] = 0; //tirando a quebra de linha que o fgets coloca
+        scanf("%s", &buscaAluno.sobrenome);
 
         if (validaOrdenacaoNome && validaOrdenacaoSobreNome)
         {
@@ -691,22 +685,23 @@ int main()
       case 1:
         printf("Nome: ");
         fflush(stdin);
-        fgets(buscaAluno.nome, TAM_nome, stdin);
+        scanf("%s", &buscaAluno.nome);
 
         printf("Sobrenome: ");
-        fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
+        fflush(stdin);
+        scanf("%s", &buscaAluno.sobrenome);
         removeAlunoNomeSobrenome(alunos, buscaAluno, countAlunos);
         break;
       case 2:
         printf("Nome: ");
         fflush(stdin);
-        fgets(buscaAluno.nome, TAM_nome, stdin);
+        scanf("%s", &buscaAluno.nome);
         removeAlunoNome(alunos, buscaAluno, countAlunos);
         break;
       case 3:
         printf("Sobrenome: ");
         fflush(stdin);
-        fgets(buscaAluno.sobrenome, TAM_sobrenome, stdin);
+        scanf("%s", &buscaAluno.sobrenome);
         removeAlunoSobrenome(alunos, buscaAluno, countAlunos);
         break;
       case 4:
@@ -733,7 +728,7 @@ int main()
       case 6:
         printf("Curso: ");
         fflush(stdin);
-        fgets(buscaAluno.curso, 4, stdin);
+        scanf("%s", &buscaAluno.curso);
         removeAlunoCurso(alunos, buscaAluno, countAlunos);
         break;
       case 0:
