@@ -6,7 +6,10 @@
 #define TAM_sobrenome 50
 
 // STRUCT DATA
-typedef struct data_nascimento //Nomeando o tipo de struct para data
+typedef struct data_nascimento
+/*
+  Criando struct para data de nascimento, nomeando para data.
+*/
 {
   int dia;
   int mes;
@@ -14,7 +17,10 @@ typedef struct data_nascimento //Nomeando o tipo de struct para data
 } data;
 
 // STRUCT ALUNO
-typedef struct cadastra_aluno //Nomeando o tipo de struct para aluno
+typedef struct cadastra_aluno
+/*
+  Criando struct para cadastro de aluno, nomeando para aluno.
+*/
 {
   char nome[TAM_nome];
   char sobrenome[TAM_sobrenome];
@@ -23,6 +29,7 @@ typedef struct cadastra_aluno //Nomeando o tipo de struct para aluno
   char curso[4];
 } aluno;
 
+// FUNÇÃO PARA CADASTRAR NOVOS ALUNOS:
 void cadastraAluno(aluno *alunos, int *numAlunos)
 {
   if (*numAlunos < 1000)
@@ -154,6 +161,14 @@ void printAlunoNaoEncontrado(aluno AlunoNaoEncontrado)
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
+// FUNÇÃO PARA CONCATENAR:
+void concat(char destino[], char primeiro[], char segundo[])
+{
+  strcpy(destino, primeiro);
+
+  strcat(destino, segundo);
+}
+
 // ORDENAR POSIÇÕES
 // FUNÇÃO PARA TROCAR DE POSIÇÃO:
 void trocaPosicao(aluno *a, aluno *b)
@@ -162,16 +177,12 @@ void trocaPosicao(aluno *a, aluno *b)
   *a = *b;
   *b = alunoAuxiliar;
 };
-// FUNÇÃO CONCAT:
-void concat(char destino[], char primeiro[], char segundo[])
-{
-  strcpy(destino, primeiro);
-
-  strcat(destino, segundo);
-}
 
 // PARTICIONANDO NOMES:
 int particionarNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
+/*
+  Separar o vetor em duas partes e ordena
+*/
 {
   aluno pivo;
   pivo = alunos[posicaoFinal];
@@ -187,7 +198,7 @@ int particionarNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
     concat(nomeSobrenomeFinal, alunos[posicaoFinal].nome, alunos[posicaoFinal].sobrenome);
     concat(pivoNomeSobrenome, pivo.nome, pivo.sobrenome);
 
-    while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeInicial, pivoNomeSobrenome) <= 0)
+    while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeInicial, pivoNomeSobrenome) <= 0) // posição inicial < que posição final e nomeSobrenome <= pivoSobrenome
     {
       posicaoInicial++;
     }
@@ -201,6 +212,9 @@ int particionarNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
 };
 
 // QUICKSORT NOME:
+/*
+  Ordena cada subvetor
+*/
 void quickSortNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
 {
   int posicaoAtual;
