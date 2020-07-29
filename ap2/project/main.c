@@ -608,14 +608,20 @@ int main()
       case 1:
         quickSortNome(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
-        validaOrdenacaoNome = 1;
+        if ((validaOrdenacaoSobreNome == 1) || (validaOrdenacaoSobreNome == 0))
+        {
+          validaOrdenacaoNome = 1;
+        }
         validaOrdenacaoSobreNome = 0;
         validaOrdenacaoProntuario = 0;
         break;
       case 2:
         quickSortSobreNome(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
-        validaOrdenacaoSobreNome = 1;
+        if ((validaOrdenacaoNome == 1) || (validaOrdenacaoNome == 0))
+        {
+          validaOrdenacaoSobreNome = 1;
+        }
         validaOrdenacaoNome = 0;
         validaOrdenacaoProntuario = 0;
         break;
