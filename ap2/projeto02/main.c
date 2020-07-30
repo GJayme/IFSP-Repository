@@ -394,6 +394,21 @@ void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFin
   };
 };
 
+// INSERTION-SORT:
+void insertionSortNome(aluno *alunos, int numAlunos)
+{
+  for (int i = 1; i < numAlunos; ++i)
+  {
+    aluno tmp = alunos[i];
+    int j = i;
+    while (j > 0 && strcmp(tmp.nome, alunos[j - 1].nome) < 0)
+    {
+      alunos[j] = alunos[j - 1];
+      --j;
+    }
+    alunos[j] = tmp;
+  }
+}
 // BUSCA DE ALUNO:
 // BUSCA POR NOME E SOBRENOME LINEAR:
 void buscarPorNome(aluno *alunos, aluno buscarAluno, int numAlunos)
