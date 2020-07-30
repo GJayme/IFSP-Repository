@@ -429,7 +429,7 @@ void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
   printf("Prontuário não cadastrado!");
 }
 
-// BUSCA POR PRONTUÁRIO LINEAR:
+// BUSCA POR PRONTUÁRIO BINÁRIO:
 void buscarPorProntuarioBinario(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   int ini = 0;
@@ -470,11 +470,8 @@ void removeAlunoNomeSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
       printAllAlunos(numAlunos, alunos);
       return;
     }
-    else
-    {
-      printf("Nenhum aluno chamado %s %s não foi encontrado!", buscarAluno.nome, buscarAluno.sobrenome);
-    }
   }
+  printf("Nenhum aluno chamado %s %s não foi encontrado!\n", buscarAluno.nome, buscarAluno.sobrenome);
 }
 
 // REMOVER POR NOME:
@@ -492,11 +489,8 @@ void removeAlunoNome(aluno *alunos, aluno buscarAluno, int numAlunos)
       printAllAlunos(numAlunos, alunos);
       return;
     }
-    else
-    {
-      printf("Nenhum aluno chamado %s não foi encontrado!", buscarAluno.nome);
-    }
   }
+  printf("Nenhum aluno chamado %s não foi encontrado!\n", buscarAluno.nome);
 }
 
 // REMOVER POR SOBRENOME SOBRENOME:
@@ -514,11 +508,8 @@ void removeAlunoSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
       printAllAlunos(numAlunos, alunos);
       return;
     }
-    else
-    {
-      printf("Nenhum aluno com sobrenome de %s não foi encontrado!", buscarAluno.sobrenome);
-    }
   }
+  printf("Nenhum aluno com sobrenome de %s não foi encontrado!\n", buscarAluno.sobrenome);
 }
 
 // REMOVER POR PRONTUÁRIO:
@@ -536,11 +527,8 @@ void removerAlunoPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
       printAllAlunos(numAlunos, alunos);
       return;
     }
-    else
-    {
-      printf("Nenhum aluno o prontuário %d não foi encontrado!", buscarAluno.prontuario);
-    }
   }
+  printf("O prontuário %d não foi encontrado!\n", buscarAluno.prontuario);
 }
 
 // REMOVER POR DATA DE NASCIMENTO:
@@ -558,11 +546,8 @@ void removerAlunoPorDataNascimento(aluno *alunos, aluno buscarAluno, int numAlun
       printAllAlunos(numAlunos, alunos);
       return;
     }
-    else
-    {
-      printf("Nenhum aluno com data de nascimento de %d-%d-%d não foi encontrado!", buscarAluno.dataNascimento.dia, buscarAluno.dataNascimento.mes, buscarAluno.dataNascimento.ano);
-    }
   }
+  printf("Nenhum aluno com data de nascimento de %d-%d-%d não foi encontrado!\n", buscarAluno.dataNascimento.dia, buscarAluno.dataNascimento.mes, buscarAluno.dataNascimento.ano);
 }
 
 // CURSO
@@ -580,11 +565,8 @@ void removeAlunoCurso(aluno *alunos, aluno buscarAluno, int numAlunos)
       printAllAlunos(numAlunos, alunos);
       return;
     }
-    else
-    {
-      printf("Nenhum aluno no curso de %s não foi encontrado!", buscarAluno.curso);
-    }
   }
+  printf("Nenhum aluno no curso de %s não foi encontrado!\n", buscarAluno.curso);
 }
 
 int main()
