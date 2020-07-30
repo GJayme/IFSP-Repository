@@ -105,6 +105,20 @@ void printSubMenuOrdenacao()
   printf("-------------------------------------------------------------------------------------------------------------\n");
 };
 
+//SUB MENU METODOS DE ORDENAÇÃO:
+void printSubMenuMetodosDeOrdenacao()
+{
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("|                                        QUAL METODO DESEJA UTILIZAR?                                        |\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+  printf("1 - Quick Sort\n");
+  printf("2 - Merge Sort\n");
+  printf("3 - Insertion Sort\n");
+  printf("4 - Selection Sort\n");
+  printf("0 - Sair do métodos de ordenação\n");
+  printf("-------------------------------------------------------------------------------------------------------------\n");
+};
+
 // SUB MENU BUSCAS POR ALUNOS
 void printSubMenuBusca()
 {
@@ -578,7 +592,7 @@ int main()
 {
   aluno alunos[1000];
   aluno buscaAluno;
-  int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaOpcaoBusca, selecionaOpcaoRemocao, countAlunos = 0;
+  int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaMetodoDeOrdenacao, selecionaOpcaoBusca, selecionaOpcaoRemocao, countAlunos = 0;
   int validaOrdenacaoNome = 0, validaOrdenacaoSobreNome = 0, validaOrdenacaoProntuario = 0;
 
   while (1)
@@ -599,37 +613,152 @@ int main()
       switch (selecionaOpcaoOrdenacao)
       {
       case 1:
-        quickSortNome(alunos, 0, countAlunos - 1);
-        printAllAlunos(countAlunos, alunos);
-        validaOrdenacaoNome = 1;
-        validaOrdenacaoProntuario = 0;
+        printSubMenuMetodosDeOrdenacao();
+        printf("Selecione uma opção: \n");
+        scanf("%d", &selecionaMetodoDeOrdenacao);
+        switch (selecionaMetodoDeOrdenacao)
+        {
+        case 1:
+          quickSortNome(alunos, 0, countAlunos - 1);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 1;
+          validaOrdenacaoProntuario = 0;
+          break;
+        case 2:
+          //MERGE SORT
+          break;
+        case 3:
+          //INSERTION SORT
+          break;
+        case 4:
+          //SELECTION SORT
+          break;
+        case 0:
+          printf("Voltando para o menu principal...\n\n");
+          break;
+        default:
+          printf("Comando inválido!\n");
+          break;
+        }
         break;
       case 2:
-        quickSortSobreNome(alunos, 0, countAlunos - 1);
-        printAllAlunos(countAlunos, alunos);
-        validaOrdenacaoSobreNome = 1;
-        validaOrdenacaoProntuario = 0;
+        printSubMenuMetodosDeOrdenacao();
+        printf("Selecione uma opção: \n");
+        scanf("%d", &selecionaMetodoDeOrdenacao);
+        switch (selecionaMetodoDeOrdenacao)
+        {
+        case 1:
+          quickSortSobreNome(alunos, 0, countAlunos - 1);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoSobreNome = 1;
+          validaOrdenacaoProntuario = 0;
+          break;
+        case 2:
+          //MERGE SORT
+          break;
+        case 3:
+          //INSERTION SORT
+          break;
+        case 4:
+          //SELECTION SORT
+          break;
+        case 0:
+          printf("Voltando para o menu principal...\n\n");
+          break;
+        default:
+          printf("Comando inválido!\n");
+          break;
+        }
         break;
       case 3:
-        quickSortDataDeNascimento(alunos, 0, countAlunos - 1);
-        printAllAlunos(countAlunos, alunos);
-        validaOrdenacaoNome = 0;
-        validaOrdenacaoSobreNome = 0;
-        validaOrdenacaoProntuario = 0;
+        printSubMenuMetodosDeOrdenacao();
+        printf("Selecione uma opção: \n");
+        scanf("%d", &selecionaMetodoDeOrdenacao);
+        switch (selecionaMetodoDeOrdenacao)
+        {
+        case 1:
+          quickSortDataDeNascimento(alunos, 0, countAlunos - 1);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
+          break;
+        case 2:
+          //MERGE SORT
+          break;
+        case 3:
+          //INSERTION SORT
+          break;
+        case 4:
+          //SELECTION SORT
+          break;
+        case 0:
+          printf("Voltando para o menu principal...\n\n");
+          break;
+        default:
+          printf("Comando inválido!\n");
+          break;
+        }
         break;
       case 4:
-        quickSortProntuario(alunos, 0, countAlunos - 1);
-        printAllAlunos(countAlunos, alunos);
-        validaOrdenacaoProntuario = 1;
-        validaOrdenacaoSobreNome = 0;
-        validaOrdenacaoNome = 0;
+        printSubMenuMetodosDeOrdenacao();
+        printf("Selecione uma opção: \n");
+        scanf("%d", &selecionaMetodoDeOrdenacao);
+        switch (selecionaMetodoDeOrdenacao)
+        {
+        case 1:
+          quickSortProntuario(alunos, 0, countAlunos - 1);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoProntuario = 1;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoNome = 0;
+          break;
+        case 2:
+          //MERGE SORT
+          break;
+        case 3:
+          //INSERTION SORT
+          break;
+        case 4:
+          //SELECTION SORT
+          break;
+        case 0:
+          printf("Voltando para o menu principal...\n\n");
+          break;
+        default:
+          printf("Comando inválido!\n");
+          break;
+        }
         break;
       case 5:
-        quickSortCurso(alunos, 0, countAlunos - 1);
-        printAllAlunos(countAlunos, alunos);
-        validaOrdenacaoNome = 0;
-        validaOrdenacaoSobreNome = 0;
-        validaOrdenacaoProntuario = 0;
+        printSubMenuMetodosDeOrdenacao();
+        printf("Selecione uma opção: \n");
+        scanf("%d", &selecionaMetodoDeOrdenacao);
+        switch (selecionaMetodoDeOrdenacao)
+        {
+        case 1:
+          quickSortCurso(alunos, 0, countAlunos - 1);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
+          break;
+        case 2:
+          //MERGE SORT
+          break;
+        case 3:
+          //INSERTION SORT
+          break;
+        case 4:
+          //SELECTION SORT
+          break;
+        case 0:
+          printf("Voltando para o menu principal...\n\n");
+          break;
+        default:
+          printf("Comando inválido!\n");
+          break;
+        }
         break;
       case 0:
         printf("Voltando para o menu principal...\n\n");
