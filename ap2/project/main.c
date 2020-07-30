@@ -201,10 +201,13 @@ int particionarNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
     while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeInicial, pivoNomeSobrenome) <= 0) // posição inicial < que posição final e nomeSobrenome <= pivoSobrenome
     {
       posicaoInicial++;
+      concat(nomeSobrenomeInicial, alunos[posicaoInicial].nome, alunos[posicaoInicial].sobrenome);
     }
     while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeFinal, pivoNomeSobrenome) > 0)
     {
       posicaoFinal--;
+      concat(nomeSobrenomeFinal, alunos[posicaoFinal].nome, alunos[posicaoFinal].sobrenome);
+      concat(pivoNomeSobrenome, pivo.nome, pivo.sobrenome);
     }
     trocaPosicao(&alunos[posicaoInicial], &alunos[posicaoFinal]);
   }
@@ -227,11 +230,11 @@ void quickSortNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
 };
 
 // PARTICIPAR SOBRENOME
-int particionarSobrenome(aluno *vetor, int posicaoInicial, int posicaoFinal)
+int particionarSobrenome(aluno *alunos, int posicaoInicial, int posicaoFinal)
 {
-  int tamanho = TAM_nome + TAM_sobrenome;
   aluno pivo;
-  pivo = vetor[posicaoFinal];
+  pivo = alunos[posicaoFinal];
+  int tamanho = TAM_nome + TAM_sobrenome;
 
   char sobrenomeNomeInicial[tamanho];
   char sobrenomeNomeFinal[tamanho];
@@ -239,19 +242,22 @@ int particionarSobrenome(aluno *vetor, int posicaoInicial, int posicaoFinal)
 
   while (posicaoInicial < posicaoFinal)
   {
-    concat(sobrenomeNomeInicial, vetor[posicaoInicial].sobrenome, vetor[posicaoInicial].nome);
-    concat(sobrenomeNomeFinal, vetor[posicaoFinal].sobrenome, vetor[posicaoFinal].nome);
+    concat(sobrenomeNomeInicial, alunos[posicaoInicial].sobrenome, alunos[posicaoInicial].nome);
+    concat(sobrenomeNomeFinal, alunos[posicaoFinal].sobrenome, alunos[posicaoFinal].nome);
     concat(pivoSobrenomeNome, pivo.sobrenome, pivo.nome);
 
     while (posicaoInicial < posicaoFinal && strcmp(sobrenomeNomeInicial, pivoSobrenomeNome) <= 0)
     {
       posicaoInicial++;
+      concat(sobrenomeNomeInicial, alunos[posicaoInicial].sobrenome, alunos[posicaoInicial].nome);
     }
     while (posicaoInicial < posicaoFinal && strcmp(sobrenomeNomeFinal, pivoSobrenomeNome) > 0)
     {
       posicaoFinal--;
+      concat(sobrenomeNomeFinal, alunos[posicaoFinal].sobrenome, alunos[posicaoFinal].nome);
+      concat(pivoSobrenomeNome, pivo.sobrenome, pivo.nome);
     }
-    trocaPosicao(&vetor[posicaoInicial], &vetor[posicaoFinal]);
+    trocaPosicao(&alunos[posicaoInicial], &alunos[posicaoFinal]);
   };
   return posicaoInicial;
 };
