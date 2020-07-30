@@ -596,21 +596,13 @@ int main()
       case 1:
         quickSortNome(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
-        if ((validaOrdenacaoSobreNome == 1) || (validaOrdenacaoSobreNome == 0))
-        {
-          validaOrdenacaoNome = 1;
-        }
-        validaOrdenacaoSobreNome = 0;
+        validaOrdenacaoNome = 1;
         validaOrdenacaoProntuario = 0;
         break;
       case 2:
         quickSortSobreNome(alunos, 0, countAlunos - 1);
         printAllAlunos(countAlunos, alunos);
-        if ((validaOrdenacaoNome == 1) || (validaOrdenacaoNome == 0))
-        {
-          validaOrdenacaoSobreNome = 1;
-        }
-        validaOrdenacaoNome = 0;
+        validaOrdenacaoSobreNome = 1;
         validaOrdenacaoProntuario = 0;
         break;
       case 3:
