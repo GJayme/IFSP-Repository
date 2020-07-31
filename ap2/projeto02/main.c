@@ -483,6 +483,118 @@ void insertionSortCurso(aluno *alunos, int numAlunos)
   }
 }
 
+// SELECTION-SORT:
+// SELECTION-SORT-NOME:
+void selectionSortNome(aluno *alunos, int numAlunos)
+{
+  int i, j, m;
+  aluno temp;
+  char nomeSobrenomeInicial[TAM_nome + TAM_sobrenome];
+  char nomeSobrenomeTemp[TAM_nome + TAM_sobrenome];
+
+  for (i = 0; i < numAlunos; i++)
+  {
+    for (j = i, m = i; j < numAlunos; j++)
+    {
+      concat(nomeSobrenomeInicial, alunos[j].nome, alunos[j].sobrenome);
+      concat(nomeSobrenomeTemp, alunos[m].nome, alunos[m].sobrenome);
+
+      if (strcmp(nomeSobrenomeInicial, nomeSobrenomeTemp) <= 0)
+      {
+        m = j;
+      }
+    }
+    temp = alunos[i];
+    alunos[i] = alunos[m];
+    alunos[m] = temp;
+  }
+}
+// SELECTION-SORT-SOBRENOME:
+void selectionSortSobrenome(aluno *alunos, int numAlunos)
+{
+  int i, j, m;
+  aluno temp;
+  char sobrenomeNomeInicial[TAM_nome + TAM_sobrenome];
+  char sobrenomeNomeTemp[TAM_nome + TAM_sobrenome];
+
+  for (i = 0; i < numAlunos; i++)
+  {
+    for (j = i, m = i; j < numAlunos; j++)
+    {
+      concat(sobrenomeNomeInicial, alunos[j].sobrenome, alunos[j].nome);
+      concat(sobrenomeNomeTemp, alunos[m].sobrenome, alunos[m].nome);
+
+      if (strcmp(sobrenomeNomeInicial, sobrenomeNomeTemp) <= 0)
+      {
+        m = j;
+      }
+    }
+    temp = alunos[i];
+    alunos[i] = alunos[m];
+    alunos[m] = temp;
+  }
+}
+// SELECTION-SORT-DATA DE NASCIMENTO:
+void selectionSortDataNascimento(aluno *alunos, int numAlunos)
+{
+  int i, j, m;
+  aluno temp;
+
+  for (i = 0; i < numAlunos; i++)
+  {
+    for (j = i, m = i; j < numAlunos; j++)
+    {
+      if (alunos[j].dataNascimento.ano * 10000 + alunos[j].dataNascimento.mes * 100 + alunos[j].dataNascimento.dia <= alunos[m].dataNascimento.ano * 10000 + alunos[m].dataNascimento.mes * 100 + alunos[m].dataNascimento.dia)
+      {
+        m = j;
+      }
+    }
+    temp = alunos[i];
+    alunos[i] = alunos[m];
+    alunos[m] = temp;
+  }
+}
+// SELECTION-SORT-PRONTUARIO:
+void selectionSortProntuario(aluno *alunos, int numAlunos)
+{
+  int i, j, m;
+  aluno temp;
+
+  for (i = 0; i < numAlunos; i++)
+  {
+    for (j = i, m = i; j < numAlunos; j++)
+    {
+      if (alunos[j].prontuario <= alunos[m].prontuario)
+      {
+        m = j;
+      }
+    }
+    temp = alunos[i];
+    alunos[i] = alunos[m];
+    alunos[m] = temp;
+  }
+}
+
+// SELECTION-SORT-CURSO:
+void selectionSortCurso(aluno *alunos, int numAlunos)
+{
+  int i, j, m;
+  aluno temp;
+
+  for (i = 0; i < numAlunos; i++)
+  {
+    for (j = i, m = i; j < numAlunos; j++)
+    {
+      if (strcmp(alunos[j].curso, alunos[m].curso) <= 0)
+      {
+        m = j;
+      }
+    }
+    temp = alunos[i];
+    alunos[i] = alunos[m];
+    alunos[m] = temp;
+  }
+}
 // BUSCA DE ALUNO:
 // BUSCA POR NOME E SOBRENOME LINEAR:
 void buscarPorNome(aluno *alunos, aluno buscarAluno, int numAlunos)
@@ -723,7 +835,10 @@ int main()
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          //SELECTION SORT
+          selectionSortNome(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoSobreNome = 1;
+          validaOrdenacaoProntuario = 0;
           break;
         case 0:
           printf("Voltando para o menu principal...\n\n");
@@ -755,7 +870,10 @@ int main()
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          //SELECTION SORT
+          selectionSortSobrenome(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoSobreNome = 1;
+          validaOrdenacaoProntuario = 0;
           break;
         case 0:
           printf("Voltando para o menu principal...\n\n");
@@ -789,7 +907,11 @@ int main()
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          //SELECTION SORT
+          selectionSortDataNascimento(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
           break;
         case 0:
           printf("Voltando para o menu principal...\n\n");
@@ -823,7 +945,11 @@ int main()
           validaOrdenacaoNome = 0;
           break;
         case 4:
-          //SELECTION SORT
+          selectionSortProntuario(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoProntuario = 1;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoNome = 0;
           break;
         case 0:
           printf("Voltando para o menu principal...\n\n");
@@ -857,7 +983,11 @@ int main()
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          //SELECTION SORT
+          selectionSortCurso(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
           break;
         case 0:
           printf("Voltando para o menu principal...\n\n");
