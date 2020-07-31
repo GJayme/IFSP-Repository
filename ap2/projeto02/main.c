@@ -395,13 +395,14 @@ void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFin
 };
 
 // INSERTION-SORT:
+// INSERT-SORT-NOME:
 void insertionSortNome(aluno *alunos, int numAlunos)
 {
   for (int i = 1; i < numAlunos; ++i)
   {
     aluno tmp = alunos[i];
     int j = i;
-    while (j > 0 && strcmp(tmp.nome, alunos[j - 1].nome) < 0)
+    while (j > 0 && strcmp(tmp.nome, alunos[j - 1].nome) <= 0)
     {
       alunos[j] = alunos[j - 1];
       --j;
@@ -409,6 +410,67 @@ void insertionSortNome(aluno *alunos, int numAlunos)
     alunos[j] = tmp;
   }
 }
+// INSERT-SORT-SOBRENOME:
+void insertionSortSobrenome(aluno *alunos, int numAlunos)
+{
+  for (int i = 1; i < numAlunos; ++i)
+  {
+    aluno tmp = alunos[i];
+    int j = i;
+    while (j > 0 && strcmp(tmp.sobrenome, alunos[j - 1].sobrenome) <= 0)
+    {
+      alunos[j] = alunos[j - 1];
+      --j;
+    }
+    alunos[j] = tmp;
+  }
+}
+// INSET-SORT DATA DE NASCIMENTO:
+void insertionSortDataDeNascimento(aluno *alunos, int numAlunos)
+{
+  for (int i = 1; i < numAlunos; ++i)
+  {
+    aluno tmp = alunos[i];
+    int j = i;
+    while (j > 0 && (tmp.dataNascimento.ano * 10000 + tmp.dataNascimento.mes * 100 + tmp.dataNascimento.dia <= alunos[j - 1].dataNascimento.ano * 10000 + alunos[j - 1].dataNascimento.mes * 100 + alunos[j - 1].dataNascimento.dia))
+    {
+      alunos[j] = alunos[j - 1];
+      --j;
+    }
+    alunos[j] = tmp;
+  }
+}
+// INSERT-SORT PRONTUÁRIO:
+void insertionSortProntuario(aluno *alunos, int numAlunos)
+{
+  for (int i = 1; i < numAlunos; ++i)
+  {
+    aluno tmp = alunos[i];
+    int j = i;
+    while (j > 0 && (tmp.prontuario <= alunos[j - 1].prontuario))
+    {
+      alunos[j] = alunos[j - 1];
+      --j;
+    }
+    alunos[j] = tmp;
+  }
+}
+// INSERTION-SORT CURSO:
+void insertionSortCurso(aluno *alunos, int numAlunos)
+{
+  for (int i = 1; i < numAlunos; ++i)
+  {
+    aluno tmp = alunos[i];
+    int j = i;
+    while (j > 0 && strcmp(tmp.curso, alunos[j - 1].curso) <= 0)
+    {
+      alunos[j] = alunos[j - 1];
+      --j;
+    }
+    alunos[j] = tmp;
+  }
+}
+
 // BUSCA DE ALUNO:
 // BUSCA POR NOME E SOBRENOME LINEAR:
 void buscarPorNome(aluno *alunos, aluno buscarAluno, int numAlunos)
@@ -643,7 +705,10 @@ int main()
           //MERGE SORT
           break;
         case 3:
-          //INSERTION SORT
+          insertionSortNome(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoSobreNome = 1;
+          validaOrdenacaoProntuario = 0;
           break;
         case 4:
           //SELECTION SORT
@@ -672,7 +737,10 @@ int main()
           //MERGE SORT
           break;
         case 3:
-          //INSERTION SORT
+          insertionSortSobrenome(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoSobreNome = 1;
+          validaOrdenacaoProntuario = 0;
           break;
         case 4:
           //SELECTION SORT
@@ -702,7 +770,11 @@ int main()
           //MERGE SORT
           break;
         case 3:
-          //INSERTION SORT
+          insertionSortDataDeNascimento(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
           break;
         case 4:
           //SELECTION SORT
@@ -732,7 +804,11 @@ int main()
           //MERGE SORT
           break;
         case 3:
-          //INSERTION SORT
+          insertionSortProntuario(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoProntuario = 1;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoNome = 0;
           break;
         case 4:
           //SELECTION SORT
@@ -762,7 +838,11 @@ int main()
           //MERGE SORT
           break;
         case 3:
-          //INSERTION SORT
+          insertionSortCurso(alunos, countAlunos);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
           break;
         case 4:
           //SELECTION SORT
