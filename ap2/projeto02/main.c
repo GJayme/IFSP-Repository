@@ -398,14 +398,20 @@ void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFin
 // INSERT-SORT-NOME:
 void insertionSortNome(aluno *alunos, int numAlunos)
 {
+  char nomeSobrenomeInicial[TAM_nome + TAM_sobrenome];
+  char nomeSobrenomeTemp[TAM_nome + TAM_sobrenome];
+
   for (int i = 1; i < numAlunos; ++i)
   {
     aluno tmp = alunos[i];
+    concat(nomeSobrenomeTemp, tmp.nome, tmp.sobrenome);
     int j = i;
-    while (j > 0 && strcmp(tmp.nome, alunos[j - 1].nome) <= 0)
+    concat(nomeSobrenomeInicial, alunos[j - 1].nome, alunos[j - 1].sobrenome);
+    while (j > 0 && strcmp(nomeSobrenomeTemp, nomeSobrenomeInicial) <= 0)
     {
       alunos[j] = alunos[j - 1];
       --j;
+      concat(nomeSobrenomeInicial, alunos[j - 1].nome, alunos[j - 1].sobrenome);
     }
     alunos[j] = tmp;
   }
@@ -413,14 +419,20 @@ void insertionSortNome(aluno *alunos, int numAlunos)
 // INSERT-SORT-SOBRENOME:
 void insertionSortSobrenome(aluno *alunos, int numAlunos)
 {
+  char sobrenomeNomeInicial[TAM_nome + TAM_sobrenome];
+  char sobrenomeNomeTemp[TAM_nome + TAM_sobrenome];
+
   for (int i = 1; i < numAlunos; ++i)
   {
     aluno tmp = alunos[i];
+    concat(sobrenomeNomeTemp, tmp.sobrenome, tmp.nome);
     int j = i;
+    concat(sobrenomeNomeInicial, alunos[j - 1].sobrenome, alunos[j - 1].nome);
     while (j > 0 && strcmp(tmp.sobrenome, alunos[j - 1].sobrenome) <= 0)
     {
       alunos[j] = alunos[j - 1];
       --j;
+      concat(sobrenomeNomeInicial, alunos[j - 1].sobrenome, alunos[j - 1].nome);
     }
     alunos[j] = tmp;
   }
