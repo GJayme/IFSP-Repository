@@ -557,12 +557,76 @@ void removeAlunoCurso(aluno *alunos, aluno buscarAluno, int numAlunos)
   printf("Nenhum aluno no curso de %s não foi encontrado!\n", buscarAluno.curso);
 }
 
+// GRAVAR E LER ARQUIVOS:
+// GRAVAR:
+void escreverArquivo(aluno alunos[], int numAlunos)
+{
+  int i;
+  FILE *arq;
+
+  // abre o arquivo para escrita no modo append (adiciona ao final)
+  arq = fopen("dados.bin", "wb");
+
+  if (arq != NULL)
+  {
+    for (i = 0; i < numAlunos; i++)
+      // escreve cada elemento do vetor no arquivo
+      fwrite(&alunos[i], sizeof(aluno), 1, arq);
+    fclose(arq); // aborta o programa
+  }
+  else
+  {
+    printf("\nErro ao abrir o arquivo para leitura!\n");
+    exit(1); // aborta o programa
+  }
+}
+
+// LER:
+// função para ler do arquivo
+// recebe o vetor que ela irá preencher
+// retorna a quantidade de elementos preenchidos
+int ler_arquivo(aluno alunos[1000])
+{
+  // abre o arquivo para leitura
+  FILE *arq = fopen("dados.bin", "rb");
+
+  if (arq != NULL)
+  {
+    int indice = 0;
+    while (1)
+    {
+      aluno p;
+
+      // fread ler os dados
+      // retorna a quantidade de elementos lidos com sucesso
+      size_t r = fread(&p, sizeof(aluno), 1, arq);
+
+      // se retorno for menor que o count, então sai do loop
+      if (r < 1)
+        break;
+      else
+        alunos[indice++] = p;
+    }
+    fclose(arq); // fecha o arquivo
+    return indice;
+  }
+  else
+  {
+    printf("\nNão foi encontrado o arquivo para leitura, continuando com o processamento.\n");
+    return 0;
+  }
+}
+
 int main()
 {
   aluno alunos[1000];
   aluno buscaAluno;
   int selecionaOpcaoDashMenu, selecionaOpcaoOrdenacao, selecionaMetodoDeOrdenacao, selecionaOpcaoBusca, selecionaOpcaoRemocao, countAlunos = 0;
-  int validaOrdenacaoNome = 0, validaOrdenacaoSobreNome = 0, validaOrdenacaoProntuario = 0;
+  int validaOrdenacaoNome = 0, validaOrdenacaoSobreNome = 0, validaOrdenacaoProntuario = 0, alunosCarregados = 0;
+
+  alunosCarregados = ler_arquivo(alunos);
+  printf("Foram carregados %d alunos.\n", alunosCarregados);
+  countAlunos = alunosCarregados;
 
   while (1)
   {
@@ -900,6 +964,7 @@ int main()
     case 0:
       printf("Saindo do programa...\n");
       printAllAlunos(countAlunos, alunos);
+      escreverArquivo(alunos, countAlunos);
       exit(0);
       break;
     default:
