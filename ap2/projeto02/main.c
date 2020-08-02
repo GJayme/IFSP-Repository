@@ -2,7 +2,6 @@
   TRABALHO DESENVOLVIDO POR: GABRIEL THOMAZINI JAYME
   Projeto 02
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +32,15 @@ typedef struct cadastra_aluno
   int prontuario;
   char curso[4];
 } aluno;
+
+enum ordenacao // label para as ordenções
+{
+  ORDENACAO_POR_NOME = 0,
+  ORDENACAO_POR_SOBRENOME = 1,
+  ORDENACAO_POR_DATA = 2,
+  ORDENACAO_POR_PRONTUARIO = 3,
+  ORDENACAO_POR_CURSO = 4,
+};
 
 // FUNÇÃO PARA CADASTRAR NOVOS ALUNOS:
 void cadastraAluno(aluno *alunos, int *numAlunos)
@@ -188,6 +196,58 @@ void concat(char destino[], char primeiro[], char segundo[])
   strcat(destino, segundo);
 }
 
+// FUNCAO COMPARA DATA DE NASCIMENTO:
+int converterData(data data)
+{
+  return data.ano * 10000 + data.mes * 100 + data.dia;
+}
+
+// IS ORDENA
+int isOrdenacaoPorNomeSobrenome(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
+{
+
+  char nomeSobrenomeAtual[TAM_nome + TAM_sobrenome];
+  char nomeSobrenomeTemp[TAM_nome + TAM_sobrenome];
+
+  // Ordenar por nome
+  if (ordenacao == ORDENACAO_POR_NOME)
+  {
+    concat(nomeSobrenomeAtual, alunoAtual.nome, alunoAtual.sobrenome);
+    concat(nomeSobrenomeTemp, alunoTemp.nome, alunoTemp.sobrenome);
+    return (strcmp(nomeSobrenomeTemp, nomeSobrenomeAtual) < 0);
+  }
+
+  // Ordenar por sobrenome
+  if (ordenacao == ORDENACAO_POR_SOBRENOME)
+  {
+    concat(nomeSobrenomeAtual, alunoAtual.sobrenome, alunoAtual.nome);
+    concat(nomeSobrenomeTemp, alunoTemp.sobrenome, alunoTemp.nome);
+    return (strcmp(nomeSobrenomeTemp, nomeSobrenomeAtual) < 0);
+  }
+  return 0;
+}
+
+int isOrdenacaoPorData(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
+{
+  return (ordenacao == ORDENACAO_POR_DATA && (converterData(alunoTemp.dataNascimento) < converterData(alunoAtual.dataNascimento)));
+}
+
+int isOrdenacaoProntuario(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
+{
+  return (ordenacao == ORDENACAO_POR_PRONTUARIO && (alunoTemp.prontuario < alunoAtual.prontuario));
+}
+
+int isOrdenacaoPorCurso(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
+{
+  return ((ordenacao == ORDENACAO_POR_CURSO) && strcmp(alunoTemp.curso, alunoAtual.curso) < 0);
+}
+
+//
+int checarOrdencao(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
+{
+  return (isOrdenacaoPorNomeSobrenome(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoPorData(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoProntuario(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoPorCurso(ordenacao, alunoTemp, alunoAtual));
+}
+
 // ORDENAR POSIÇÕES
 // FUNÇÃO PARA TROCAR DE POSIÇÃO:
 void trocaPosicao(aluno *a, aluno *b)
@@ -197,284 +257,40 @@ void trocaPosicao(aluno *a, aluno *b)
   *b = alunoAuxiliar;
 };
 
-// PARTICIONANDO NOMES:
-int particionarNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
-/*
-  Separar o vetor em duas partes e ordena
-*/
+// QUICK-SORT:
+void quickSort(aluno *A, int len, enum ordenacao ordenacao)
 {
-  aluno pivo;
-  pivo = alunos[posicaoFinal];
-  int tamanho = TAM_nome + TAM_sobrenome;
+  if (len < 2)
+    return;
 
-  char nomeSobrenomeInicial[tamanho];
-  char nomeSobrenomeFinal[tamanho];
-  char pivoNomeSobrenome[tamanho];
+  aluno pivot = A[len / 2];
 
-  while (posicaoInicial < posicaoFinal)
+  int i, j;
+  for (i = 0, j = len - 1;; i++, j--)
   {
-    concat(nomeSobrenomeInicial, alunos[posicaoInicial].nome, alunos[posicaoInicial].sobrenome);
-    concat(nomeSobrenomeFinal, alunos[posicaoFinal].nome, alunos[posicaoFinal].sobrenome);
-    concat(pivoNomeSobrenome, pivo.nome, pivo.sobrenome);
+    while (checarOrdencao(ordenacao, A[i], pivot))
+      i++;
+    while (checarOrdencao(ordenacao, pivot, A[j]))
+      j--;
 
-    while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeInicial, pivoNomeSobrenome) <= 0) // posição inicial < que posição final e nomeSobrenome <= pivoSobrenome
-    {
-      posicaoInicial++;
-      concat(nomeSobrenomeInicial, alunos[posicaoInicial].nome, alunos[posicaoInicial].sobrenome);
-    }
-    while (posicaoInicial < posicaoFinal && strcmp(nomeSobrenomeFinal, pivoNomeSobrenome) > 0)
-    {
-      posicaoFinal--;
-      concat(nomeSobrenomeFinal, alunos[posicaoFinal].nome, alunos[posicaoFinal].sobrenome);
-      concat(pivoNomeSobrenome, pivo.nome, pivo.sobrenome);
-    }
-    trocaPosicao(&alunos[posicaoInicial], &alunos[posicaoFinal]);
+    if (i >= j)
+      break;
+
+    trocaPosicao(&A[i], &A[j]);
   }
-  return posicaoInicial;
-};
 
-// QUICKSORT NOME:
-/*
-  Ordena cada subvetor
-*/
-void quickSortNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
-{
-  int posicaoAtual;
-  if (posicaoInicial < posicaoFinal)
-  {
-    posicaoAtual = particionarNome(alunos, posicaoInicial, posicaoFinal);
-    quickSortNome(alunos, posicaoInicial, posicaoAtual - 1);
-    quickSortNome(alunos, posicaoAtual, posicaoFinal);
-  };
-};
-
-// PARTICIPAR SOBRENOME
-int particionarSobrenome(aluno *alunos, int posicaoInicial, int posicaoFinal)
-{
-  aluno pivo;
-  pivo = alunos[posicaoFinal];
-  int tamanho = TAM_nome + TAM_sobrenome;
-
-  char sobrenomeNomeInicial[tamanho];
-  char sobrenomeNomeFinal[tamanho];
-  char pivoSobrenomeNome[tamanho];
-
-  while (posicaoInicial < posicaoFinal)
-  {
-    concat(sobrenomeNomeInicial, alunos[posicaoInicial].sobrenome, alunos[posicaoInicial].nome);
-    concat(sobrenomeNomeFinal, alunos[posicaoFinal].sobrenome, alunos[posicaoFinal].nome);
-    concat(pivoSobrenomeNome, pivo.sobrenome, pivo.nome);
-
-    while (posicaoInicial < posicaoFinal && strcmp(sobrenomeNomeInicial, pivoSobrenomeNome) <= 0)
-    {
-      posicaoInicial++;
-      concat(sobrenomeNomeInicial, alunos[posicaoInicial].sobrenome, alunos[posicaoInicial].nome);
-    }
-    while (posicaoInicial < posicaoFinal && strcmp(sobrenomeNomeFinal, pivoSobrenomeNome) > 0)
-    {
-      posicaoFinal--;
-      concat(sobrenomeNomeFinal, alunos[posicaoFinal].sobrenome, alunos[posicaoFinal].nome);
-      concat(pivoSobrenomeNome, pivo.sobrenome, pivo.nome);
-    }
-    trocaPosicao(&alunos[posicaoInicial], &alunos[posicaoFinal]);
-  };
-  return posicaoInicial;
-};
-
-// QUICKSORT SOBRENOME:
-void quickSortSobreNome(aluno *alunos, int posicaoInicial, int posicaoFinal)
-{
-  int posicaoAtual;
-  if (posicaoInicial < posicaoFinal)
-  {
-    posicaoAtual = particionarSobrenome(alunos, posicaoInicial, posicaoFinal);
-    quickSortSobreNome(alunos, posicaoInicial, posicaoAtual - 1);
-    quickSortSobreNome(alunos, posicaoAtual, posicaoFinal);
-  };
-};
-
-// PARTICIONAR PRONTUÁRIO:
-int particionarProntuario(aluno *vetor, int posicaoInicial, int posicaoFinal)
-{
-  aluno pivo;
-  pivo = vetor[posicaoFinal];
-
-  while (posicaoInicial < posicaoFinal)
-  {
-    while (posicaoInicial < posicaoFinal && (vetor[posicaoInicial].prontuario <= pivo.prontuario))
-    {
-      posicaoInicial++;
-    }
-    while (posicaoInicial < posicaoFinal && (vetor[posicaoFinal].prontuario > pivo.prontuario))
-    {
-      posicaoFinal--;
-    }
-    trocaPosicao(&vetor[posicaoInicial], &vetor[posicaoFinal]);
-  };
-  return posicaoInicial;
-};
-
-// QUICKSORT PRONTUÁRIO:
-void quickSortProntuario(aluno *alunos, int posicaoInicial, int posicaoFinal)
-{
-  int posicaoAtual;
-  if (posicaoInicial < posicaoFinal)
-  {
-    posicaoAtual = particionarProntuario(alunos, posicaoInicial, posicaoFinal);
-    quickSortProntuario(alunos, posicaoInicial, posicaoAtual - 1);
-    quickSortProntuario(alunos, posicaoAtual, posicaoFinal);
-  };
-};
-
-// PARTICIONAR CURSO:
-int particionarCurso(aluno *vetor, int posicaoInicial, int posicaoFinal)
-{
-  aluno pivo;
-  pivo = vetor[posicaoFinal];
-
-  while (posicaoInicial < posicaoFinal)
-  {
-    while (posicaoInicial < posicaoFinal && strcmp(vetor[posicaoInicial].curso, pivo.curso) <= 0)
-    {
-      posicaoInicial++;
-    }
-    while (posicaoInicial < posicaoFinal && strcmp(vetor[posicaoInicial].curso, pivo.curso) > 0)
-    {
-      posicaoFinal--;
-    }
-    trocaPosicao(&vetor[posicaoInicial], &vetor[posicaoFinal]);
-  };
-  return posicaoInicial;
-};
-
-// QUICKSORT CURSO:
-void quickSortCurso(aluno *alunos, int posicaoInicial, int posicaoFinal)
-{
-  int posicaoAtual;
-  if (posicaoInicial < posicaoFinal)
-  {
-    posicaoAtual = particionarCurso(alunos, posicaoInicial, posicaoFinal);
-    quickSortCurso(alunos, posicaoInicial, posicaoAtual - 1);
-    quickSortCurso(alunos, posicaoAtual, posicaoFinal);
-  };
-};
-
-// PARTICIONAR DATA DE NASCIMENTO:
-int particionarDataNascimento(aluno *vetor, int posicaoInicial, int posicaoFinal)
-{
-  aluno pivo;
-  pivo = vetor[posicaoFinal];
-
-  while (posicaoInicial < posicaoFinal)
-  {
-    //CONVERTENDO AS DATAS EM EM INT E SOMANDO PARA PODER EFETUAR AS COMPARAÇÕES
-    while (posicaoInicial < posicaoFinal && (vetor[posicaoInicial].dataNascimento.ano * 10000 + vetor[posicaoInicial].dataNascimento.mes * 100 + vetor[posicaoInicial].dataNascimento.dia) <= (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
-    {
-      posicaoInicial++;
-    };
-
-    while (posicaoInicial < posicaoFinal && (vetor[posicaoFinal].dataNascimento.ano * 10000 + vetor[posicaoFinal].dataNascimento.mes * 100 + vetor[posicaoFinal].dataNascimento.dia) > (pivo.dataNascimento.ano * 10000 + pivo.dataNascimento.mes * 100 + pivo.dataNascimento.dia))
-    {
-      posicaoFinal--;
-    }
-    trocaPosicao(&vetor[posicaoInicial], &vetor[posicaoFinal]);
-  }
-  return posicaoInicial;
+  quickSort(A, i, ordenacao);
+  quickSort(A + i, len - i, ordenacao);
 }
-
-// QUICKSORT DATA DE NASCIMENTO:
-void quickSortDataDeNascimento(aluno *alunos, int posicaoInicial, int posicaoFinal)
-{
-  int posicaoAtual;
-  if (posicaoInicial < posicaoFinal)
-  {
-    posicaoAtual = particionarDataNascimento(alunos, posicaoInicial, posicaoFinal);
-    quickSortDataDeNascimento(alunos, posicaoInicial, posicaoAtual - 1);
-    quickSortDataDeNascimento(alunos, posicaoAtual, posicaoFinal);
-  };
-};
 
 // INSERTION-SORT:
-// INSERT-SORT-NOME:
-void insertionSortNome(aluno *alunos, int numAlunos)
-{
-  char nomeSobrenomeInicial[TAM_nome + TAM_sobrenome];
-  char nomeSobrenomeTemp[TAM_nome + TAM_sobrenome];
-
-  for (int i = 1; i < numAlunos; ++i)
-  {
-    aluno tmp = alunos[i];
-    concat(nomeSobrenomeTemp, tmp.nome, tmp.sobrenome);
-    int j = i;
-    concat(nomeSobrenomeInicial, alunos[j - 1].nome, alunos[j - 1].sobrenome);
-    while (j > 0 && strcmp(nomeSobrenomeTemp, nomeSobrenomeInicial) <= 0)
-    {
-      alunos[j] = alunos[j - 1];
-      --j;
-      concat(nomeSobrenomeInicial, alunos[j - 1].nome, alunos[j - 1].sobrenome);
-    }
-    alunos[j] = tmp;
-  }
-}
-// INSERT-SORT-SOBRENOME:
-void insertionSortSobrenome(aluno *alunos, int numAlunos)
-{
-  char sobrenomeNomeInicial[TAM_nome + TAM_sobrenome];
-  char sobrenomeNomeTemp[TAM_nome + TAM_sobrenome];
-
-  for (int i = 1; i < numAlunos; ++i)
-  {
-    aluno tmp = alunos[i];
-    concat(sobrenomeNomeTemp, tmp.sobrenome, tmp.nome);
-    int j = i;
-    concat(sobrenomeNomeInicial, alunos[j - 1].sobrenome, alunos[j - 1].nome);
-    while (j > 0 && strcmp(tmp.sobrenome, alunos[j - 1].sobrenome) <= 0)
-    {
-      alunos[j] = alunos[j - 1];
-      --j;
-      concat(sobrenomeNomeInicial, alunos[j - 1].sobrenome, alunos[j - 1].nome);
-    }
-    alunos[j] = tmp;
-  }
-}
-// INSET-SORT DATA DE NASCIMENTO:
-void insertionSortDataDeNascimento(aluno *alunos, int numAlunos)
+void insertionSort(aluno *alunos, int numAlunos, enum ordenacao ordenacao)
 {
   for (int i = 1; i < numAlunos; ++i)
   {
     aluno tmp = alunos[i];
     int j = i;
-    while (j > 0 && (tmp.dataNascimento.ano * 10000 + tmp.dataNascimento.mes * 100 + tmp.dataNascimento.dia <= alunos[j - 1].dataNascimento.ano * 10000 + alunos[j - 1].dataNascimento.mes * 100 + alunos[j - 1].dataNascimento.dia))
-    {
-      alunos[j] = alunos[j - 1];
-      --j;
-    }
-    alunos[j] = tmp;
-  }
-}
-// INSERT-SORT PRONTUÁRIO:
-void insertionSortProntuario(aluno *alunos, int numAlunos)
-{
-  for (int i = 1; i < numAlunos; ++i)
-  {
-    aluno tmp = alunos[i];
-    int j = i;
-    while (j > 0 && (tmp.prontuario <= alunos[j - 1].prontuario))
-    {
-      alunos[j] = alunos[j - 1];
-      --j;
-    }
-    alunos[j] = tmp;
-  }
-}
-// INSERTION-SORT CURSO:
-void insertionSortCurso(aluno *alunos, int numAlunos)
-{
-  for (int i = 1; i < numAlunos; ++i)
-  {
-    aluno tmp = alunos[i];
-    int j = i;
-    while (j > 0 && strcmp(tmp.curso, alunos[j - 1].curso) <= 0)
+    while (j > 0 && checarOrdencao(ordenacao, tmp, alunos[j - 1]))
     {
       alunos[j] = alunos[j - 1];
       --j;
@@ -484,58 +300,7 @@ void insertionSortCurso(aluno *alunos, int numAlunos)
 }
 
 // SELECTION-SORT:
-// SELECTION-SORT-NOME:
-void selectionSortNome(aluno *alunos, int numAlunos)
-{
-  int i, j, m;
-  aluno temp;
-  char nomeSobrenomeInicial[TAM_nome + TAM_sobrenome];
-  char nomeSobrenomeTemp[TAM_nome + TAM_sobrenome];
-
-  for (i = 0; i < numAlunos; i++)
-  {
-    for (j = i, m = i; j < numAlunos; j++)
-    {
-      concat(nomeSobrenomeInicial, alunos[j].nome, alunos[j].sobrenome);
-      concat(nomeSobrenomeTemp, alunos[m].nome, alunos[m].sobrenome);
-
-      if (strcmp(nomeSobrenomeInicial, nomeSobrenomeTemp) <= 0)
-      {
-        m = j;
-      }
-    }
-    temp = alunos[i];
-    alunos[i] = alunos[m];
-    alunos[m] = temp;
-  }
-}
-// SELECTION-SORT-SOBRENOME:
-void selectionSortSobrenome(aluno *alunos, int numAlunos)
-{
-  int i, j, m;
-  aluno temp;
-  char sobrenomeNomeInicial[TAM_nome + TAM_sobrenome];
-  char sobrenomeNomeTemp[TAM_nome + TAM_sobrenome];
-
-  for (i = 0; i < numAlunos; i++)
-  {
-    for (j = i, m = i; j < numAlunos; j++)
-    {
-      concat(sobrenomeNomeInicial, alunos[j].sobrenome, alunos[j].nome);
-      concat(sobrenomeNomeTemp, alunos[m].sobrenome, alunos[m].nome);
-
-      if (strcmp(sobrenomeNomeInicial, sobrenomeNomeTemp) <= 0)
-      {
-        m = j;
-      }
-    }
-    temp = alunos[i];
-    alunos[i] = alunos[m];
-    alunos[m] = temp;
-  }
-}
-// SELECTION-SORT-DATA DE NASCIMENTO:
-void selectionSortDataNascimento(aluno *alunos, int numAlunos)
+void selectionSort(aluno *alunos, int numAlunos, enum ordenacao ordenacao)
 {
   int i, j, m;
   aluno temp;
@@ -544,52 +309,12 @@ void selectionSortDataNascimento(aluno *alunos, int numAlunos)
   {
     for (j = i, m = i; j < numAlunos; j++)
     {
-      if (alunos[j].dataNascimento.ano * 10000 + alunos[j].dataNascimento.mes * 100 + alunos[j].dataNascimento.dia <= alunos[m].dataNascimento.ano * 10000 + alunos[m].dataNascimento.mes * 100 + alunos[m].dataNascimento.dia)
+      if (checarOrdencao(ordenacao, alunos[j], alunos[m]))
       {
         m = j;
       }
     }
-    temp = alunos[i];
-    alunos[i] = alunos[m];
-    alunos[m] = temp;
-  }
-}
-// SELECTION-SORT-PRONTUARIO:
-void selectionSortProntuario(aluno *alunos, int numAlunos)
-{
-  int i, j, m;
-  aluno temp;
-
-  for (i = 0; i < numAlunos; i++)
-  {
-    for (j = i, m = i; j < numAlunos; j++)
-    {
-      if (alunos[j].prontuario <= alunos[m].prontuario)
-      {
-        m = j;
-      }
-    }
-    temp = alunos[i];
-    alunos[i] = alunos[m];
-    alunos[m] = temp;
-  }
-}
-
-// SELECTION-SORT-CURSO:
-void selectionSortCurso(aluno *alunos, int numAlunos)
-{
-  int i, j, m;
-  aluno temp;
-
-  for (i = 0; i < numAlunos; i++)
-  {
-    for (j = i, m = i; j < numAlunos; j++)
-    {
-      if (strcmp(alunos[j].curso, alunos[m].curso) <= 0)
-      {
-        m = j;
-      }
-    }
+    // troca o item atual (i) pela menor item encontrado (j)
     temp = alunos[i];
     alunos[i] = alunos[m];
     alunos[m] = temp;
@@ -597,41 +322,48 @@ void selectionSortCurso(aluno *alunos, int numAlunos)
 }
 
 // MERGE-SORT:
-// MERGE-SORT NOME:
-void merge(int *a, int n, int m)
+void merge(aluno *alunos, int numAlunos, int m, enum ordenacao ordenacao)
 {
   int i, j, k;
-  int *x = malloc(n * sizeof(int));
-  for (i = 0, j = m, k = 0; k < n; k++)
+  aluno *x = malloc(numAlunos * sizeof(aluno));
+  for (i = 0, j = m, k = 0; k < numAlunos; k++)
   {
-    x[k] = j == n ? a[i++]
-                  : i == m ? a[j++]
-                           : a[j] < a[i] ? a[j++]
-                                         : a[i++];
+    if (j == numAlunos)
+    {
+      x[k] = alunos[i++];
+    }
+
+    else if (i == m)
+    {
+      x[k] = alunos[j++];
+    }
+
+    else if (checarOrdencao(ordenacao, alunos[j], alunos[i]))
+    {
+      x[k] = alunos[j++];
+    }
+
+    else
+    {
+      x[k] = alunos[i++];
+    }
   }
-  for (i = 0; i < n; i++)
+  for (i = 0; i < numAlunos; i++)
   {
-    a[i] = x[i];
+    alunos[i] = x[i];
   }
   free(x);
 }
 
-void merge_sort(int *a, int n)
+void mergeSort(aluno *alunos, int numAlunos, enum ordenacao ordenacao)
 {
-  if (n < 2)
+  if (numAlunos < 2)
     return;
-  int m = n / 2;
-  merge_sort(a, m);
-  merge_sort(a + m, n - m);
-  merge(a, n, m);
+  int m = numAlunos / 2;
+  mergeSort(alunos, m, ordenacao);
+  mergeSort(alunos + m, numAlunos - m, ordenacao);
+  merge(alunos, numAlunos, m, ordenacao);
 }
-// MERGE-SORT SOBRENOME:
-
-// MERGE-SORT DATA DE NASCIMENTO:
-
-// MERGE-SORT PRONTUARIO:
-
-// MERGE-SORTE CURSO:
 
 // BUSCA DE ALUNO:
 // BUSCA POR NOME E SOBRENOME LINEAR:
@@ -858,22 +590,25 @@ int main()
         switch (selecionaMetodoDeOrdenacao)
         {
         case 1:
-          quickSortNome(alunos, 0, countAlunos - 1);
+          quickSort(alunos, countAlunos, ORDENACAO_POR_NOME);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoNome = 1;
           validaOrdenacaoProntuario = 0;
           break;
         case 2:
-          //MERGE SORT
+          mergeSort(alunos, countAlunos, ORDENACAO_POR_NOME);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 1;
+          validaOrdenacaoProntuario = 0;
           break;
         case 3:
-          insertionSortNome(alunos, countAlunos);
+          insertionSort(alunos, countAlunos, ORDENACAO_POR_NOME);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoSobreNome = 1;
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          selectionSortNome(alunos, countAlunos);
+          selectionSort(alunos, countAlunos, ORDENACAO_POR_NOME);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoSobreNome = 1;
           validaOrdenacaoProntuario = 0;
@@ -893,22 +628,25 @@ int main()
         switch (selecionaMetodoDeOrdenacao)
         {
         case 1:
-          quickSortSobreNome(alunos, 0, countAlunos - 1);
+          quickSort(alunos, countAlunos, ORDENACAO_POR_SOBRENOME);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoSobreNome = 1;
           validaOrdenacaoProntuario = 0;
           break;
         case 2:
-          //MERGE SORT
+          mergeSort(alunos, countAlunos, ORDENACAO_POR_SOBRENOME);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoSobreNome = 1;
+          validaOrdenacaoProntuario = 0;
           break;
         case 3:
-          insertionSortSobrenome(alunos, countAlunos);
+          insertionSort(alunos, countAlunos, ORDENACAO_POR_SOBRENOME);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoSobreNome = 1;
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          selectionSortSobrenome(alunos, countAlunos);
+          selectionSort(alunos, countAlunos, ORDENACAO_POR_SOBRENOME);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoSobreNome = 1;
           validaOrdenacaoProntuario = 0;
@@ -928,24 +666,28 @@ int main()
         switch (selecionaMetodoDeOrdenacao)
         {
         case 1:
-          quickSortDataDeNascimento(alunos, 0, countAlunos - 1);
+          quickSort(alunos, countAlunos, ORDENACAO_POR_DATA);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoNome = 0;
           validaOrdenacaoSobreNome = 0;
           validaOrdenacaoProntuario = 0;
           break;
         case 2:
-          //MERGE SORT
+          mergeSort(alunos, countAlunos, ORDENACAO_POR_DATA);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
           break;
         case 3:
-          insertionSortDataDeNascimento(alunos, countAlunos);
+          insertionSort(alunos, countAlunos, ORDENACAO_POR_DATA);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoNome = 0;
           validaOrdenacaoSobreNome = 0;
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          selectionSortDataNascimento(alunos, countAlunos);
+          selectionSort(alunos, countAlunos, ORDENACAO_POR_DATA);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoNome = 0;
           validaOrdenacaoSobreNome = 0;
@@ -966,24 +708,28 @@ int main()
         switch (selecionaMetodoDeOrdenacao)
         {
         case 1:
-          quickSortProntuario(alunos, 0, countAlunos - 1);
+          quickSort(alunos, countAlunos, ORDENACAO_POR_PRONTUARIO);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoProntuario = 1;
           validaOrdenacaoSobreNome = 0;
           validaOrdenacaoNome = 0;
           break;
         case 2:
-          //MERGE SORT
+          mergeSort(alunos, countAlunos, ORDENACAO_POR_PRONTUARIO);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoProntuario = 1;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoNome = 0;
           break;
         case 3:
-          insertionSortProntuario(alunos, countAlunos);
+          insertionSort(alunos, countAlunos, ORDENACAO_POR_PRONTUARIO);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoProntuario = 1;
           validaOrdenacaoSobreNome = 0;
           validaOrdenacaoNome = 0;
           break;
         case 4:
-          selectionSortProntuario(alunos, countAlunos);
+          selectionSort(alunos, countAlunos, ORDENACAO_POR_PRONTUARIO);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoProntuario = 1;
           validaOrdenacaoSobreNome = 0;
@@ -1004,24 +750,28 @@ int main()
         switch (selecionaMetodoDeOrdenacao)
         {
         case 1:
-          quickSortCurso(alunos, 0, countAlunos - 1);
+          quickSort(alunos, countAlunos, ORDENACAO_POR_CURSO);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoNome = 0;
           validaOrdenacaoSobreNome = 0;
           validaOrdenacaoProntuario = 0;
           break;
         case 2:
-          //MERGE SORT
+          mergeSort(alunos, countAlunos, ORDENACAO_POR_CURSO);
+          printAllAlunos(countAlunos, alunos);
+          validaOrdenacaoNome = 0;
+          validaOrdenacaoSobreNome = 0;
+          validaOrdenacaoProntuario = 0;
           break;
         case 3:
-          insertionSortCurso(alunos, countAlunos);
+          insertionSort(alunos, countAlunos, ORDENACAO_POR_CURSO);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoNome = 0;
           validaOrdenacaoSobreNome = 0;
           validaOrdenacaoProntuario = 0;
           break;
         case 4:
-          selectionSortCurso(alunos, countAlunos);
+          selectionSort(alunos, countAlunos, ORDENACAO_POR_CURSO);
           printAllAlunos(countAlunos, alunos);
           validaOrdenacaoNome = 0;
           validaOrdenacaoSobreNome = 0;
