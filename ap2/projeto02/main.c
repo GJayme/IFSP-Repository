@@ -1,6 +1,6 @@
 /*
   TRABALHO DESENVOLVIDO POR: GABRIEL THOMAZINI JAYME
-  Projeto 02
+  AP2 - Projeto 02
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,40 +43,38 @@ enum ordenacao // label para as ordenções
 };
 
 // FUNÇÃO PARA CADASTRAR NOVOS ALUNOS:
-void cadastraAluno(aluno *alunos, int *numAlunos)
+void cadastraAluno(aluno *alunos, int numAlunos)
 {
-  if (*numAlunos < 1000)
+  if (numAlunos < 1000)
   {
     printf("Bem vindo a tela de cadastro de aluno.\n");
     printf("Nome: ");
     fflush(stdin);
-    scanf("%s", &alunos[*numAlunos].nome);
+    scanf("%s", &alunos[numAlunos].nome);
 
     printf("Sobrenome: ");
     fflush(stdin);
-    scanf("%s", &alunos[*numAlunos].sobrenome);
+    scanf("%s", &alunos[numAlunos].sobrenome);
 
     printf("Dia de nascimento: ");
     fflush(stdin);
-    scanf("%d", &alunos[*numAlunos].dataNascimento.dia);
+    scanf("%d", &alunos[numAlunos].dataNascimento.dia);
 
     printf("Mês de nascimento: ");
     fflush(stdin);
-    scanf("%d", &alunos[*numAlunos].dataNascimento.mes);
+    scanf("%d", &alunos[numAlunos].dataNascimento.mes);
 
     printf("Ano de nascimento: ");
     fflush(stdin);
-    scanf("%d", &alunos[*numAlunos].dataNascimento.ano);
+    scanf("%d", &alunos[numAlunos].dataNascimento.ano);
 
     printf("Número do prontuario ");
     fflush(stdin);
-    scanf("%d", &alunos[*numAlunos].prontuario);
+    scanf("%d", &alunos[numAlunos].prontuario);
 
     printf("Curso: ");
     fflush(stdin);
-    scanf("%s", &alunos[*numAlunos].curso);
-
-    *numAlunos += 1;
+    scanf("%s", &alunos[numAlunos].curso);
   }
   else
   {
@@ -202,7 +200,7 @@ int converterData(data data)
   return data.ano * 10000 + data.mes * 100 + data.dia;
 }
 
-// IS ORDENA
+// VERIFICADOR DE QUAL TIPO DE ORDENAÇÃO:
 int isOrdenacaoPorNomeSobrenome(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
 {
 
@@ -242,7 +240,7 @@ int isOrdenacaoPorCurso(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAt
   return ((ordenacao == ORDENACAO_POR_CURSO) && strcmp(alunoTemp.curso, alunoAtual.curso) < 0);
 }
 
-//
+// CHECANDO QUAL ORDENACAO FOI SOLICITADA:
 int checarOrdencao(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
 {
   return (isOrdenacaoPorNomeSobrenome(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoPorData(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoProntuario(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoPorCurso(ordenacao, alunoTemp, alunoAtual));
@@ -258,29 +256,29 @@ void trocaPosicao(aluno *a, aluno *b)
 };
 
 // QUICK-SORT:
-void quickSort(aluno *A, int len, enum ordenacao ordenacao)
+void quickSort(aluno *alunos, int len, enum ordenacao ordenacao)
 {
   if (len < 2)
     return;
 
-  aluno pivot = A[len / 2];
+  aluno pivot = alunos[len / 2];
 
   int i, j;
   for (i = 0, j = len - 1;; i++, j--)
   {
-    while (checarOrdencao(ordenacao, A[i], pivot))
+    while (checarOrdencao(ordenacao, alunos[i], pivot))
       i++;
-    while (checarOrdencao(ordenacao, pivot, A[j]))
+    while (checarOrdencao(ordenacao, pivot, alunos[j]))
       j--;
 
     if (i >= j)
       break;
 
-    trocaPosicao(&A[i], &A[j]);
+    trocaPosicao(&alunos[i], &alunos[j]);
   }
 
-  quickSort(A, i, ordenacao);
-  quickSort(A + i, len - i, ordenacao);
+  quickSort(alunos, i, ordenacao);
+  quickSort(alunos + i, len - i, ordenacao);
 }
 
 // INSERTION-SORT:
@@ -574,7 +572,8 @@ int main()
     switch (selecionaOpcaoDashMenu)
     {
     case 1:
-      cadastraAluno(alunos, &countAlunos);
+      cadastraAluno(alunos, countAlunos);
+      countAlunos += 1;
       printMenuPrincipal();
       break;
     case 2:
