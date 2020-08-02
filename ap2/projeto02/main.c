@@ -261,14 +261,14 @@ void quickSort(aluno *alunos, int len, enum ordenacao ordenacao)
   if (len < 2)
     return;
 
-  aluno pivot = alunos[len / 2];
+  aluno pivo = alunos[len / 2];
 
   int i, j;
   for (i = 0, j = len - 1;; i++, j--)
   {
-    while (checarOrdencao(ordenacao, alunos[i], pivot))
+    while (checarOrdencao(ordenacao, alunos[i], pivo))
       i++;
-    while (checarOrdencao(ordenacao, pivot, alunos[j]))
+    while (checarOrdencao(ordenacao, pivo, alunos[j]))
       j--;
 
     if (i >= j)
