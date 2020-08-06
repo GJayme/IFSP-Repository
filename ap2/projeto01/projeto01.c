@@ -1,6 +1,6 @@
 /*
   TRABALHO DESENVOLVIDO POR: GABRIEL THOMAZINI JAYME
-  AP2 - Projeto 02
+  AP2 - Projeto 01
 */
 #include <stdio.h>
 #include <stdlib.h>
