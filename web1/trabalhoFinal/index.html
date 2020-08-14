@@ -14,7 +14,14 @@
 </head>
 
 <body>
-
+  <script>
+    let categorias = $.ajax({
+      url: 'https://tiagoifsp.ddns.net/noticias/categorias/listar.php ',
+      type: 'GET'
+    })
+    console.log(categorias)
+    console.log(categorias.responseJSON)
+  </script>
 </body>
 
 </html>
