@@ -46,8 +46,11 @@
   </footer>
 
   <script>
+    let categories = []
+
     let setCategories = (data) => {
       $.each(data, (indice, data) => {
+        categories.push(data)
         $(" ul").append(
           ` 
             <li class="nav-item">
@@ -95,27 +98,54 @@
       $("main").empty()
       $("main").append(`
       <form>
-      <div class="form-group">
-        <label for="categories">Categoria:</label>
-        <select id="categories">
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="title">Título da notícia:</label>
-        <input type="text" class="form-control" placeholder="Título" id="title">
-      </div>
-      <div class="form-group">
-        <label for="subtitle">Subtítulo da notícia:</label>
-        <input type="text" class="form-control" placeholder="Subtítulo" id="subtitle">
-      </div>
-      <div class="form-group">
-        <label for="content">Conteúdo  da notícia:</label>
-        <textarea rows="4" cols="50" name="comment" placeholder="Conteúdo"></textarea>
-      </div>
-      
-      <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
+        <div class="form-group">
+          <label for="categories">Categoria:</label>
+          <select id="categories">
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="title">Título da notícia:</label>
+          <input type="text" class="form-control" placeholder="Título" id="add-title">
+        </div>
+        <div class="form-group">
+          <label for="subtitle">Subtítulo da notícia:</label>
+          <input type="text" class="form-control" placeholder="Subtítulo" id="add-subtitle">
+        </div>
+        <div>
+          <label for="content">Conteúdo  da notícia:</label>
+        </div>
+          <textarea rows="5" cols="137" name="comment" id="add-content" placeholder="Conteúdo"></textarea>
+        <div>
+          <p id="teste">Testes</p>
+          <button  class="btn btn-primary button-add-news">Enviar</button>
+        </div>
+      </form>
       `)
+
+      for (i in categories) {
+        $("#categories").append(`
+          <option id="${categories[i].id}">${categories[i].nome}</option>
+        `)
+      }
+    })
+
+    $(document).on("click", ".button-add-news", () => {
+
+      addNew = {
+        "titulo": $("#add-title").val(),
+        "subtitulo": $("#add-subtitle").val(),
+        "conteudo": $("#add-content").val(),
+        "idCategoria": $("#categories option:selected").attr('id')
+      }
+
+      parsedNew = JSON.stringify(addNew)
+
+      $.ajax({
+        url: 'https://tiagoifsp.ddns.net/noticias/noticias/cadastrar.php',
+        type: 'POST',
+        dataType: 'JSON',
+        data: addNew
+      })
     })
 
     $.ajax({
@@ -126,7 +156,7 @@
     })
 
     $(document).on("click", ".one-new", function () {
-      var id = $(this).attr('id')
+      let id = $(this).attr('id')
       $.ajax({
         url: 'https://tiagoifsp.ddns.net/noticias/noticias/listar.php',
         type: 'GET',
