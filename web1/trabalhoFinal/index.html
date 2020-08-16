@@ -71,6 +71,7 @@
             <p id="subtitle">Subtitulo: ${data.subtitulo} </p>
             <p id="content">Conteúdo: ${data.conteudo} </p>
             <button type="button" class="btn btn-primary" id="edit-news">Editar</button>
+            <button type="button" class="btn btn-danger" id="delete-news">Deletar</button>
           </div>
           `)
         } else {
@@ -220,6 +221,21 @@
         type: method,
         dataType: 'JSON',
         data: edditNew
+      })
+
+      $("main").empty()
+    })
+
+    $(document).on('click', '#delete-news', function () {
+      let idDeleteNews = $(this).parent().attr('id')
+
+      $.ajax({
+        url: 'https://tiagoifsp.ddns.net/noticias/noticias/deletar.php',
+        type: 'GET',
+        dataType: 'JSON',
+        data: {
+          "id": idDeleteNews
+        }
       })
 
       $("main").empty()
