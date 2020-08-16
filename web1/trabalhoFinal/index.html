@@ -66,11 +66,11 @@
       $.each(data, (indice, data) => {
         if (data.editavel) {
           $("main").append(`
-          <div>
-            <h1>Título: ${data.titulo}</h1>
-            <p>Subtitulo: ${data.subtitulo} </p>
-            <p>Conteúdo: ${data.conteudo} </p>
-            <button type="button" class="btn btn-primary">Editar</button>
+          <div id="${data.id}">
+            <h1 id="title">Título: ${data.titulo}</h1>
+            <p id="subtitle">Subtitulo: ${data.subtitulo} </p>
+            <p id="content">Conteúdo: ${data.conteudo} </p>
+            <button type="button" class="btn btn-primary" id="edit-news">Editar</button>
           </div>
           `)
         } else {
@@ -89,6 +89,7 @@
       $("main").empty()
       $("main").append(`
       <form action="https://tiagoifsp.ddns.net/noticias/noticias/cadastrar.php" method="POST" id="form-add-news">
+        <h1>Cadastrar Notícia</h1>
         <div class="form-group">
           <label for="categories">Categoria:</label>
           <select id="categories">
@@ -108,7 +109,7 @@
           <textarea rows="5" cols="137" name="comment" id="add-content" placeholder="Conteúdo"></textarea>
         <div>
           <p id="teste">Testes</p>
-          <button class="btn btn-primary button-add-news">Enviar</button>
+          <button class="btn btn-primary button-add-news">Cadastrar</button>
         </div>
       </form>
       `)
@@ -123,7 +124,7 @@
     $(document).on("click", ".button-add-news", (event) => {
       event.preventDefault();
 
-      addNew = {
+      let addNew = {
         "titulo": $("#add-title").val(),
         "subtitulo": $("#add-subtitle").val(),
         "conteudo": $("#add-content").val(),
@@ -140,13 +141,6 @@
       $('#form-add-news')[0].reset()
     })
 
-    $.ajax({
-      url: 'https://tiagoifsp.ddns.net/noticias/categorias/listar.php',
-      type: 'GET',
-      dataType: 'JSON',
-      success: setCategories
-    })
-
     $(document).on("click", ".one-new", function () {
       let id = $(this).attr('id')
       $.ajax({
@@ -160,7 +154,91 @@
       })
     })
 
+    $(document).on("click", "#edit-news", function (event) {
+      $("main").empty()
 
+      event.preventDefault()
+
+      let title = $(this).siblings('#title')[0].textContent
+      title = title.replace('Título:', '').trim()
+      let subtitle = $(this).siblings('#subtitle')[0].textContent
+      subtitle = subtitle.replace('Subtitulo:', '').trim()
+      let content = $(this).siblings('#content')[0].textContent
+      content = content.replace('Conteúdo:', '').trim()
+
+      let idEdditNews = $(this).parent().attr('id')
+
+      $("main").append(`
+      <form action="https://tiagoifsp.ddns.net/noticias/noticias/editar.php" method="POST" id="form-eddit-news">
+        <h1>Editar Notícia</h1>
+        <div class="form-group flagIdEddit" id="${idEdditNews}">
+          <label for="categories">Categoria:</label>
+          <select id="categories">
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="title">Título da notícia:</label>
+          <input type="text" class="form-control" placeholder="Título" id="add-title" value="${title}">
+        </div>
+        <div class="form-group">
+          <label for="subtitle">Subtítulo da notícia:</label>
+          <input type="text" class="form-control" placeholder="Subtítulo" id="add-subtitle" value="${subtitle}">
+        </div>
+        <div>
+          <label for="content">Conteúdo  da notícia:</label>
+        </div>
+          <textarea rows="5" cols="137" name="comment" id="add-content" placeholder="Conteúdo">${content}</textarea>
+        <div>
+          <p id="teste">Testes</p>
+          <button class="btn btn-primary button-edit-news">Editar</button>
+        </div>
+      </form>
+      `)
+
+      for (i in categories) {
+        $("#categories").append(`
+          <option id="${categories[i].id}">${categories[i].nome}</option>
+        `)
+      }
+    })
+
+    $(document).on('click', '.button-edit-news', function (event) {
+      event.preventDefault()
+
+      let url = $('#form-eddit-news').attr('action')
+      let method = $('#form-eddit-news').attr('method')
+      let id = $('.flagIdEddit').attr('id')
+
+      console.log(id)
+
+      let edditNew = {
+        id,
+        "titulo": $("#add-title").val(),
+        "subtitulo": $("#add-subtitle").val(),
+        "conteudo": $("#add-content").val(),
+        "idCategoria": $("#categories option:selected").attr('id')
+      }
+
+      console.log(url, method, id)
+      console.log(edditNew)
+
+      $.ajax({
+        url,
+        type: method,
+        dataType: 'JSON',
+        data: edditNew
+      })
+
+      $("main").empty()
+    })
+
+
+    $.ajax({
+      url: 'https://tiagoifsp.ddns.net/noticias/categorias/listar.php',
+      type: 'GET',
+      dataType: 'JSON',
+      success: setCategories
+    })
   </script>
 </body>
 
