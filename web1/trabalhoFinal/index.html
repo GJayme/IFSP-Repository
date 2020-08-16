@@ -108,7 +108,6 @@
         </div>
           <textarea rows="5" cols="137" name="comment" id="add-content" placeholder="Conteúdo"></textarea>
         <div>
-          <p id="teste">Testes</p>
           <button class="btn btn-primary button-add-news">Cadastrar</button>
         </div>
       </form>
@@ -189,7 +188,6 @@
         </div>
           <textarea rows="5" cols="137" name="comment" id="add-content" placeholder="Conteúdo">${content}</textarea>
         <div>
-          <p id="teste">Testes</p>
           <button class="btn btn-primary button-edit-news">Editar</button>
         </div>
       </form>
@@ -209,8 +207,6 @@
       let method = $('#form-eddit-news').attr('method')
       let id = $('.flagIdEddit').attr('id')
 
-      console.log(id)
-
       let edditNew = {
         id,
         "titulo": $("#add-title").val(),
@@ -218,9 +214,6 @@
         "conteudo": $("#add-content").val(),
         "idCategoria": $("#categories option:selected").attr('id')
       }
-
-      console.log(url, method, id)
-      console.log(edditNew)
 
       $.ajax({
         url,
