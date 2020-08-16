@@ -64,15 +64,6 @@
     let getNews = (data) => {
       $("main").empty()
       $.each(data, (indice, data) => {
-        console.log(data)
-        // conteudo: "Não sei quando, mas que morreu, morreu"
-        // data: "2020-08-13 01:20:33"
-        // editavel: 1
-        // id: 4
-        // idCategoria: 5
-        // subtitulo: "Morre autor de "E o vento levou""
-        // titulo: "Morre autor de "E o vento levou""
-
         if (data.editavel) {
           $("main").append(`
           <div>
@@ -97,7 +88,7 @@
     $(document).on("click", "#ad-news", () => {
       $("main").empty()
       $("main").append(`
-      <form>
+      <form action="https://tiagoifsp.ddns.net/noticias/noticias/cadastrar.php" method="POST" id="form-add-news">
         <div class="form-group">
           <label for="categories">Categoria:</label>
           <select id="categories">
@@ -117,7 +108,7 @@
           <textarea rows="5" cols="137" name="comment" id="add-content" placeholder="Conteúdo"></textarea>
         <div>
           <p id="teste">Testes</p>
-          <button  class="btn btn-primary button-add-news">Enviar</button>
+          <button class="btn btn-primary button-add-news">Enviar</button>
         </div>
       </form>
       `)
@@ -129,7 +120,8 @@
       }
     })
 
-    $(document).on("click", ".button-add-news", () => {
+    $(document).on("click", ".button-add-news", (event) => {
+      event.preventDefault();
 
       addNew = {
         "titulo": $("#add-title").val(),
@@ -138,14 +130,14 @@
         "idCategoria": $("#categories option:selected").attr('id')
       }
 
-      parsedNew = JSON.stringify(addNew)
-
       $.ajax({
         url: 'https://tiagoifsp.ddns.net/noticias/noticias/cadastrar.php',
         type: 'POST',
         dataType: 'JSON',
-        data: addNew
+        data: addNew,
       })
+
+      $('#form-add-news')[0].reset()
     })
 
     $.ajax({
