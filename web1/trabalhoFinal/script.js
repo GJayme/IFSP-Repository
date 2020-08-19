@@ -38,6 +38,42 @@ let getNews = (data) => {
   })
 }
 
+let toastSucess = (msg) => {
+  $.toast({
+    heading: "Sucesso!!",
+    text: `${msg}`,
+    icon: "success",
+    showHideTransition: "slide",
+    allowToastClose: true,
+    hideAfter: 3000,
+    stack: 5,
+    position: "bottom-right",
+    textAlign: "left",
+    loader: true,
+    loaderBg: "#9EC600",
+    bgColor: "rgba(0,199,40,0.76)",
+    textColor: "#fff",
+  });
+}
+
+let toastError = (msg) => {
+  $.toast({
+    heading: "Erro!!",
+    text: `${msg}`,
+    icon: "warning",
+    showHideTransition: "slide",
+    allowToastClose: true,
+    hideAfter: 3000,
+    stack: 5,
+    position: "bottom-right",
+    textAlign: "left",
+    loader: true,
+    loaderBg: "#ec9caa",
+    bgColor: "rgba(217,40,40,0.76)",
+    textColor: "#fff",
+  });
+}
+
 $(document).on("click", "#ad-news", () => {
   $("main").empty()
   $("main").append(`
@@ -88,6 +124,8 @@ $(document).on("click", ".button-add-news", (event) => {
     type: 'POST',
     dataType: 'JSON',
     data: addNew,
+    success: () => toastSucess('Notícia cadastrada.'),
+    error: () => toastError('Erro no cadastro.')
   })
 
   $('#form-add-news')[0].reset()
@@ -172,7 +210,9 @@ $(document).on('click', '.button-edit-news', function (event) {
     url,
     type: method,
     dataType: 'JSON',
-    data: edditNew
+    data: edditNew,
+    success: () => toastSucess('Notícia Editada.'),
+    error: () => toastError('Erro na comunicação.')
   })
 
   $("main").empty()
@@ -189,6 +229,8 @@ $(document).on('click', '#delete-news', function () {
       "id": idDeleteNews
     }
   })
+
+  toastSucess('Notícia Deletada.')
 
   $("main").empty()
 })
