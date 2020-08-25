@@ -10,10 +10,10 @@
 #define TAM_sobrenome 50
 
 // STRUCT DATA
-typedef struct data_nascimento
 /*
   Criando struct para data de nascimento, nomeando para data.
 */
+typedef struct data_nascimento
 {
   int dia;
   int mes;
@@ -21,10 +21,10 @@ typedef struct data_nascimento
 } data;
 
 // STRUCT ALUNO
-typedef struct cadastra_aluno
 /*
   Criando struct para cadastro de aluno, nomeando para aluno.
 */
+typedef struct cadastra_aluno
 {
   char nome[TAM_nome];
   char sobrenome[TAM_sobrenome];
@@ -43,6 +43,14 @@ enum ordenacao // label para as ordenções
 };
 
 // FUNÇÃO PARA CADASTRAR NOVOS ALUNOS:
+/*
+  Params: 
+    Ponteiro de struct alunos,
+    int da quantidade de alunos cadastrados.
+  Objetivo:
+    Faz a checagem da quantidade máxima de alunos e pede as informações 
+    necessárias do cadastro.
+*/
 void cadastraAluno(aluno *alunos, int numAlunos)
 {
   if (numAlunos < 1000)
@@ -187,6 +195,15 @@ void printAlunoNaoEncontrado(aluno AlunoNaoEncontrado)
 };
 
 // FUNÇÃO PARA CONCATENAR:
+/*
+  Params: 
+    array de char destino, 
+    array de char primeira palavra,
+    array de char segunda palavra.
+  Objetivo: 
+    o array de char destino recebe o array de char primeiro + array de 
+    char segundo.
+*/
 void concat(char destino[], char primeiro[], char segundo[])
 {
   strcpy(destino, primeiro);
@@ -195,12 +212,28 @@ void concat(char destino[], char primeiro[], char segundo[])
 }
 
 // FUNCAO COMPARA DATA DE NASCIMENTO:
+/*
+  Params: 
+    recebe um struc de data
+  Objetivo:
+    Soma as datas convertidas em um único int.
+*/
 int converterData(data data)
 {
   return data.ano * 10000 + data.mes * 100 + data.dia;
 }
 
 // VERIFICADOR DE QUAL TIPO DE ORDENAÇÃO:
+/*
+  Params: 
+    ordenacao é o método de ordenação desejada (ORDENACAO_POR_NOME ou 
+    ORDENACAO_POR_SOBRENOME), 
+    struc de aluno, 
+    struc de aluno
+  Objetivo: 
+    checa qual método de ordenação escolhido e executa os concat's 
+    e retorna a comparação das strings
+*/
 int isOrdenacaoPorNomeSobrenome(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
 {
 
@@ -241,6 +274,15 @@ int isOrdenacaoPorCurso(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAt
 }
 
 // CHECANDO QUAL ORDENACAO FOI SOLICITADA:
+/*
+  Params: 
+    método de ordenacao desejado,
+    struct de alunos,
+    struct de alunos,
+  Objetivo:
+    Checa qual método de ordenacao está sendo solicitado, caso encontre algum
+    como verdadeiro ele executa imediatamente.
+*/
 int checarOrdencao(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
 {
   return (isOrdenacaoPorNomeSobrenome(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoPorData(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoProntuario(ordenacao, alunoTemp, alunoAtual) || isOrdenacaoPorCurso(ordenacao, alunoTemp, alunoAtual));
@@ -248,6 +290,13 @@ int checarOrdencao(enum ordenacao ordenacao, aluno alunoTemp, aluno alunoAtual)
 
 // ORDENAR POSIÇÕES
 // FUNÇÃO PARA TROCAR DE POSIÇÃO:
+/*
+  Params:
+    Ponteiro de a,
+    Ponteiro de b.
+  Objetivo:
+    Ele pega e troca a posição de a com b.
+*/
 void trocaPosicao(aluno *a, aluno *b)
 {
   aluno alunoAuxiliar = *a;
@@ -256,6 +305,18 @@ void trocaPosicao(aluno *a, aluno *b)
 };
 
 // QUICK-SORT:
+/*
+  Params: 
+    Ponteiro de struct alunos,
+    tamanho do vetor,
+    metodo de ordenação
+  Objetivo:
+    Checa o tamanho do vetor, caso menor que 2 ele para o método.
+    Pega Struct Pivo.
+    Percorre o vetor de alunos checando o método de ordenação, começando na 
+    posição 0 indo até i ser maior ou igual a j.
+    Troca a posição dos alunos na posição i e j
+*/
 void quickSort(aluno *alunos, int len, enum ordenacao ordenacao)
 {
   if (len < 2)
@@ -365,6 +426,16 @@ void mergeSort(aluno *alunos, int numAlunos, enum ordenacao ordenacao)
 
 // BUSCA DE ALUNO:
 // BUSCA POR NOME E SOBRENOME LINEAR:
+/*
+  Params:
+    Ponteiro de struct alunos,
+    Struct de alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre todo o vetor de alunos cadastrado checando com o input da busca do
+    aluno desejado, caso a comparação entre os nomes retorne 1 ele printa o
+    aluno encontrado e retorna, caso termine o form ele printa aluno não encontrado.
+*/
 void buscarPorNome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
@@ -404,6 +475,17 @@ void buscarPorNomeBinario(aluno *alunos, aluno buscarAluno, int numAlunos)
 }
 
 // BUSCA POR PRONTUÁRIO LINEAR:
+/*
+  Params:
+    Ponteiro de struct alunos,
+    Struct de alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre todo o vetor de alunos cadastrado checando com o input da busca do
+    aluno desejado, caso a comparação entre os nomes retorne verdadeoro ele 
+    printa o aluno encontrado e retorna, caso termine o for ele printa aluno não 
+    encontrado.
+*/
 void bucarPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
@@ -444,17 +526,28 @@ void buscarPorProntuarioBinario(aluno *alunos, aluno buscarAluno, int numAlunos)
 
 // REMOVER ALUNOS:
 // REMOVER POR NOME E SOBRENOME:
+/*
+  Params: 
+    ponteiro de struct alunos,
+    struct alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre o vetor de alunos checando com o valor de busca, caso encontre
+    ele pega a posição do aluno encontrado e vai movendo ela até o final do
+    array quando chegar no final ele pega a ultima posição do arrya e remove do
+    array dos alunos cadastrados.
+*/
 void removeAlunoNomeSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
-  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  for (int i = 0; i < numAlunos; i++)
   {
     if (!strcmp(alunos[i].nome, buscarAluno.nome) && !strcmp(alunos[i].sobrenome, buscarAluno.sobrenome)) // Encontrou o aluno
     {
-      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      for (int j = i; j < numAlunos; j++)
       {
         alunos[j] = alunos[j + 1];
       }
-      numAlunos--; // Remove um aluno do total
+      numAlunos--;
       printAllAlunos(numAlunos, alunos);
       return;
     }
@@ -463,17 +556,28 @@ void removeAlunoNomeSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
 }
 
 // REMOVER POR NOME:
+/*
+  Params: 
+    ponteiro de struct alunos,
+    struct alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre o vetor de alunos checando com o valor de busca, caso encontre
+    ele pega a posição do aluno encontrado e vai movendo ela até o final do
+    array quando chegar no final ele pega a ultima posição do arrya e remove do
+    array dos alunos cadastrados.
+*/
 void removeAlunoNome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
-  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  for (int i = 0; i < numAlunos; i++)
   {
-    if (!strcmp(alunos[i].nome, buscarAluno.nome)) // Encontrou o aluno
+    if (!strcmp(alunos[i].nome, buscarAluno.nome))
     {
-      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      for (int j = i; j < numAlunos; j++)
       {
         alunos[j] = alunos[j + 1];
       }
-      numAlunos--; // Remove um aluno do total
+      numAlunos--;
       printAllAlunos(numAlunos, alunos);
       return;
     }
@@ -482,17 +586,28 @@ void removeAlunoNome(aluno *alunos, aluno buscarAluno, int numAlunos)
 }
 
 // REMOVER POR SOBRENOME SOBRENOME:
+/*
+  Params: 
+    ponteiro de struct alunos,
+    struct alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre o vetor de alunos checando com o valor de busca, caso encontre
+    ele pega a posição do aluno encontrado e vai movendo ela até o final do
+    array quando chegar no final ele pega a ultima posição do arrya e remove do
+    array dos alunos cadastrados.
+*/
 void removeAlunoSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
-  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  for (int i = 0; i < numAlunos; i++)
   {
-    if (!strcmp(alunos[i].sobrenome, buscarAluno.sobrenome)) // Encontrou o aluno
+    if (!strcmp(alunos[i].sobrenome, buscarAluno.sobrenome))
     {
-      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      for (int j = i; j < numAlunos; j++)
       {
         alunos[j] = alunos[j + 1];
       }
-      numAlunos--; // Remove um aluno do total
+      numAlunos--;
       printAllAlunos(numAlunos, alunos);
       return;
     }
@@ -501,17 +616,28 @@ void removeAlunoSobrenome(aluno *alunos, aluno buscarAluno, int numAlunos)
 }
 
 // REMOVER POR PRONTUÁRIO:
+/*
+  Params: 
+    ponteiro de struct alunos,
+    struct alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre o vetor de alunos checando com o valor de busca, caso encontre
+    ele pega a posição do aluno encontrado e vai movendo ela até o final do
+    array quando chegar no final ele pega a ultima posição do arrya e remove do
+    array dos alunos cadastrados.
+*/
 void removerAlunoPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
   for (int i = 0; i < numAlunos; i++)
   {
     if (alunos[i].prontuario == buscarAluno.prontuario)
     {
-      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      for (int j = i; j < numAlunos; j++)
       {
         alunos[j] = alunos[j + 1];
       }
-      numAlunos--; // Remove um aluno do total
+      numAlunos--;
       printAllAlunos(numAlunos, alunos);
       return;
     }
@@ -520,17 +646,28 @@ void removerAlunoPorProntuario(aluno *alunos, aluno buscarAluno, int numAlunos)
 }
 
 // REMOVER POR DATA DE NASCIMENTO:
+/*
+  Params: 
+    ponteiro de struct alunos,
+    struct alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre o vetor de alunos checando com o valor de busca, caso encontre
+    ele pega a posição do aluno encontrado e vai movendo ela até o final do
+    array quando chegar no final ele pega a ultima posição do arrya e remove do
+    array dos alunos cadastrados.
+*/
 void removerAlunoPorDataNascimento(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
-  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  for (int i = 0; i < numAlunos; i++)
   {
     if ((alunos[i].dataNascimento.ano * 10000 + alunos[i].dataNascimento.mes * 100 + alunos[i].dataNascimento.dia) == (buscarAluno.dataNascimento.ano * 10000 + buscarAluno.dataNascimento.mes * 100 + buscarAluno.dataNascimento.dia)) // Encontrou o aluno
     {
-      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      for (int j = i; j < numAlunos; j++)
       {
         alunos[j] = alunos[j + 1];
       }
-      numAlunos--; // Remove um aluno do total
+      numAlunos--;
       printAllAlunos(numAlunos, alunos);
       return;
     }
@@ -539,17 +676,28 @@ void removerAlunoPorDataNascimento(aluno *alunos, aluno buscarAluno, int numAlun
 }
 
 // CURSO
+/*
+  Params: 
+    ponteiro de struct alunos,
+    struct alunos,
+    quantidade de alunos cadastrados.
+  Objetivo:
+    Percorre o vetor de alunos checando com o valor de busca, caso encontre
+    ele pega a posição do aluno encontrado e vai movendo ela até o final do
+    array quando chegar no final ele pega a ultima posição do arrya e remove do
+    array dos alunos cadastrados.
+*/
 void removeAlunoCurso(aluno *alunos, aluno buscarAluno, int numAlunos)
 {
-  for (int i = 0; i < numAlunos; i++) // For percorrendo todos os alunos
+  for (int i = 0; i < numAlunos; i++)
   {
-    if (!strcmp(alunos[i].curso, buscarAluno.curso)) // Encontrou o aluno
+    if (!strcmp(alunos[i].curso, buscarAluno.curso))
     {
-      for (int j = i; j < numAlunos; j++) //Ajusta o restante dos alunos
+      for (int j = i; j < numAlunos; j++)
       {
         alunos[j] = alunos[j + 1];
       }
-      numAlunos--; // Remove um aluno do total
+      numAlunos--;
       printAllAlunos(numAlunos, alunos);
       return;
     }
