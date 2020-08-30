@@ -1,46 +1,48 @@
 let getPrograms = (data) => {
   $("table").empty();
+  $("table").append(`
+  <thead>
+    <tr>
+      <td><b>Nome</b></td>
+      <td><b>Tipo de programação</b></td>
+      <td><b>Idioma</b></td>
+    </tr>
+  </thead>
+  <tbody></tbody>
+  `)
   for (i in data) {
-    $("table").append(`
-      <thead>
-        <tr>
-          <td>Nome</td>
-          <td>Tipo de programação</td>
-          <td>Idioma</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>${data[i].show.name}</td>
-          <td>${data[i].show.type}</td>
-          <td>${data[i].show.language}</td>
-          <td>
-            <button idEpisodies=${data[i].show.id} id="buttonEpisodies">Buscar</button>
-          </td>
-        </tr>
-      </tbody>
-    `)
+    $("tbody").append(`
+    <tr>
+      <td>${data[i].show.name}</td>
+      <td>${data[i].show.type}</td>
+      <td>${data[i].show.language}</td>
+      <td>
+        <button idEpisodies=${data[i].show.id} id="buttonEpisodies" class="btn btn-dark">Buscar</button>
+      </td>
+    </tr>
+  `)
   }
 }
 
 let getEpisodies = (data) => {
   $("table").empty();
+  $("table").append(`
+  <thead>
+    <tr>
+      <td><b>Capítulo</b></td>
+      <td><b>Temporada</b></td>
+      <td><b>Data de exibição</b</td>
+    </tr>
+  </thead>
+  <tbody></tbody>
+  `)
   for (i in data) {
-    $("table").append(`
-      <thead>
-        <tr>
-          <td>Número do Capítulo</td>
-          <td>Número da Temporada</td>
-          <td>Data de exibição</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>${data[i].number}</td>
-          <td>${data[i].season}</td>
-          <td>${data[i].airdate}</td>
-        </tr>
-      </tbody>
+    $("tbody").append(`
+      <tr>
+        <td>${data[i].number}</td>
+        <td>${data[i].season}</td>
+        <td>${data[i].airdate}</td>
+      </tr>
     `)
   }
 }
