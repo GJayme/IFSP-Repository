@@ -1,5 +1,7 @@
 package poo_java_02_class ;
 
+import java.util.Scanner;
+
 public class DataTypes {
 
     static int foraDoEscopo;
@@ -7,7 +9,7 @@ public class DataTypes {
     enum Sexo {MASCULINO, FEMININO, NAO_DECLARADO}; //serve pra criar categorias
 
     public static void main (String[] args){
-        int i; //declarei variável mas não o valor
+        /*int i; //declarei variável mas não o valor
         int j = 10; // declarei a variavel e o valor
         i = 10; // agora declarei o valor de i
         j = 11; // alterei o valor de j
@@ -60,6 +62,42 @@ public class DataTypes {
         num +=10; //jao = jao + 10;
         System.out.println("num = " + num);
 
+        Scanner scanner = new Scanner(System.in); //Inputar texto
+
+        String name = scanner.nextLine();
+        int idade = scanner.nextInt();
+        double peso = scanner.nextDouble();
+
+        if (idade >= 18) {
+            System.out.println(name+ " Pode beber corote.");
+        } else  {
+            System.out.println(name + " só bebe leite!");
+        }
+
+        System.out.println(idade >=18 ? name + " Pode beber coroto" : name + "só bebe leite!");*/
+
+        Scanner scanner = new Scanner(System.in);
+        int value = scanner.nextInt();
+        int otherValue = 0;
+
+        switch (value) {
+            case 1:
+                otherValue =1;
+                break;
+            case 2:
+                otherValue =2;
+                break;
+            case 3:
+                otherValue =3;
+                break;
+            case 4:
+                otherValue =4;
+                break;
+            default:
+                otherValue = -1;
+        }
+
+        System.out.println("otherValue = " + otherValue );
     }
 }
 
