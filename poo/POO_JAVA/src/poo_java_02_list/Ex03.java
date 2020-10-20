@@ -1,80 +1,72 @@
 package poo_java_02_list;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ex03 {
+
+    static boolean test = true;
+
     public static void main(String[] args) {
-        int[] array;
-        int[] finalArray = new int [10];
-
-        array = makeArray();
-
-        for (int i = 0; i < array.length; i++) {
-            int count = 0;
-            for (int j = 0; j < array.length; j++) {
-               if(array[i] == array[j]) {
-                   count += 1;
-               }
-               if (count > 1) {
-                   System.out.println("Erro");
-                   return;
-               }
-            }
-        }
-
-        for (int i = 0; i < array.length; i++) {
-            finalArray[i] = array[i];
-        }
-
-        rotulo:
-        for (int i = 5; i < finalArray.length; i++) {
-            Scanner scanner = new Scanner(System.in);
-
-            int numTemp = scanner.nextInt();
-            int [] arrayTemp = new int [10];
-            int canAdd = 0;
-
-            for (int j = 0; j < finalArray.length; j++) {
-                if (finalArray[j] == numTemp) {
-                    canAdd += 1;
-
-                    for (int k = 0; k < finalArray.length; k++) {
-                        if (finalArray[k] != numTemp) {
-                            arrayTemp[k] = finalArray[k];
-                        }
-                    }
-                    finalArray = arrayTemp;
-                    printArray(finalArray);
-                    if (finalArray == null || finalArray.length == 0) {
-                        break rotulo;
-                    }
-                }
-            }
-
-            if (canAdd == 0 ) {
-                finalArray[i] = numTemp;
-                printArray(finalArray);
-            } else {
-                i--;
-            }
-        }
-    }
-
-    public static void printArray (int[] array) {
-        for (int j : array) {
-            System.out.println(j);
-        }
-    }
-
-    public static int [] makeArray() {
-        int[] array = new int[5];
 
         Scanner scanner = new Scanner(System.in);
 
-        for (int i = 0; i < array.length; i++) {
-            array[i] = scanner.nextInt();
+        ArrayList<Integer> numArray = new ArrayList<>();
+
+        test = inputFirstArrayNumber(scanner, numArray);
+
+        if (!test) {
+            System.out.println("Erro");
+            return;
         }
-        return array;
+
+        printArray(numArray);
+        while (scanner.hasNext() && numArray.size() > 0 && numArray.size() <= 10){
+            int number = scanner.nextInt();
+
+            int index = numArray.indexOf(number);
+
+            if (index >= 0) {
+                numArray.remove(index);
+            } else {
+                numArray.add(number);
+            }
+            printArray(numArray);
+        }
+    }
+
+    public static void printArray (ArrayList<Integer> array) {
+        for (int j : array) {
+            System.out.print(j + " ");
+        }
+        if(array.size() > 0) {
+            System.out.println();
+        }
+    }
+
+    public static boolean inputFirstArrayNumber (Scanner scanner, ArrayList<Integer> array) {
+
+        if (!scanner.hasNext()){
+            return false;
+        }
+
+        String line = scanner.nextLine();
+        String[] numbersLine = line.split(" ");
+
+        for (int i = 0; i < numbersLine.length; i++) {
+            int number = Integer.parseInt(numbersLine[i]);
+
+            if(array.contains(number)){
+                return false;
+            }
+            array.add(number);
+        }
+
+        if(array.size() != 5) {
+            return false;
+        }
+
+        return true;
     }
 
 }
