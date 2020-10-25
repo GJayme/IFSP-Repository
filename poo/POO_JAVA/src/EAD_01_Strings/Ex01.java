@@ -3,6 +3,22 @@ package EAD_01_Strings;
 import java.util.Scanner;
 
 public class Ex01 {
+    /*
+    Implemente um programa que gere senhas provisórias a partir do nome do usuário,
+    seguindo o mesmo padrão dos exemplos a seguir:
+
+        EXEMPLO 1 Entrada: Java | Saída: J*Ja*Jav*Jav*Ja* J
+        EXEMPLO 2 Entrada: POOS3 | Saída: P*PO*POO*POOS*POOS*POO*PO*P
+        EXEMPLO 3 Entrada: KO | Saída: K*K
+        EXEMPLO 4 Entrada: O | Saída: Invalido
+        EXEMPLO 5 Entrada: | Saída: InvalidoImplemente um programa que gere senhas provisórias
+            a partir do nome do usuário, seguindo o mesmo padrão dos exemplos a seguir:
+        EXEMPLO 1 Entrada: Java | Saída: J*Ja*Jav*Jav*Ja* J
+        EXEMPLO 2 Entrada: POOS3 | Saída: P*PO*POO*POOS*POOS*POO*PO*P
+        EXEMPLO 3 Entrada: KO | Saída: K*K
+        EXEMPLO 4 Entrada: O | Saída: Invalido
+        EXEMPLO 5 Entrada: | Saída: Invalido
+     */
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);

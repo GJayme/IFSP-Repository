@@ -22,14 +22,16 @@ public class Ex02 {
         String lastSubstring= "";
 
         int lengthSubstring = scanner.nextInt();
+
         if(lengthSubstring > initialString.length() ) {
             System.out.println();
             return;
-        } else {
-            firstSubstring = firstSubstringInAlphabeticalOrder(initialString, firstSubstring, lengthSubstring);
-            lastSubstring = lastSSubstringInAlphabeticalOrder(initialString, lastSubstring, lengthSubstring);
-            System.out.println(firstSubstring + " " + lastSubstring);
         }
+
+        firstSubstring = firstSubstringInAlphabeticalOrder(initialString, firstSubstring, lengthSubstring);
+        lastSubstring = lastSSubstringInAlphabeticalOrder(initialString, lastSubstring, lengthSubstring);
+        System.out.println(firstSubstring + " " + lastSubstring);
+
     }
 
     public static String lastSSubstringInAlphabeticalOrder(String inputString, String lastSubString, int lengthSubString) {
