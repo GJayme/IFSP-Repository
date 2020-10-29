@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/gabrieljayme/www/ifsp/ifsp/ESD/02_aula_lista_ligadas/main.c
+stdio.h
+/Users/gabrieljayme/www/ifsp/ifsp/ESD/02_aula_lista_ligadas/stdio.h
+stdlib.h
+/Users/gabrieljayme/www/ifsp/ifsp/ESD/02_aula_lista_ligadas/stdlib.h
+
