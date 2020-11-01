@@ -1,4 +1,4 @@
-package poo_java_02_class ;
+package class_02;
 
 import java.util.Scanner;
 

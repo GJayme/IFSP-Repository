@@ -1,4 +1,4 @@
-package poo_java_04_class.ex01;
+package class_04.ex01;
 
 public class Principal {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package poo_java_01_class;
+package class_01;
 
 public class HelloWord {
     public static void main(String[] args) {

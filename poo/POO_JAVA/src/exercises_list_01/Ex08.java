@@ -1,4 +1,4 @@
-package poo_java_01_list;
+package exercises_list_01;
 
 import java.util.Scanner;
 

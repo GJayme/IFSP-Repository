@@ -1,4 +1,4 @@
-package poo_java_03_class;
+package class_03;
 
 public class ArrayExamples {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package poo_java_02_list;
+package exercises_list_02;
 
 public class Ex10 {
 

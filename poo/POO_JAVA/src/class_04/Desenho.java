@@ -1,4 +1,4 @@
-package poo_java_04_class;
+package class_04;
 
 
 public class Desenho {
