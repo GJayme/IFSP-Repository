@@ -17,4 +17,13 @@ public class Triangulo extends Figura {
 
         return Math.sqrt(p*(p-l1)*(p-l2)*(p-l3));
     }
+
+    @Override
+    public String toString() {
+        return "Triangulo{" +
+                "l1=" + l1 +
+                ", l2=" + l2 +
+                ", l3=" + l3 +
+                '}';
+    }
 }
