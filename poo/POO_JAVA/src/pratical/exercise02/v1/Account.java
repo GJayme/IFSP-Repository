@@ -1,4 +1,4 @@
-package pratical_exercise_02_v1;
+package pratical.exercise02.v1;
 
 public class Account {
 

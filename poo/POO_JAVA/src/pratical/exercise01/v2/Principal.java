@@ -1,4 +1,4 @@
-package pratical_exercise_01_v2;
+package pratical.exercise01.v2;
 
 public class Principal {
 

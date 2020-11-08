@@ -1,17 +1,15 @@
-package pratical_exercise_02_v1;
+package pratical.exercise02.v1;
 
-public class Client {
+public class Bank {
 
-    private String nome;
-    private String cpf;
+    private int number;
 
-    private Account[] accounts = new Account[1000];
+    private Account[] accounts = new Account[10000];
 
     private int countAccount = 0;
 
-    public Client(String nome, String cpf) {
-        this.nome = nome;
-        this.cpf = cpf;
+    public Bank(int number) {
+        this.number = number;
     }
 
     public void listAccounts(){
@@ -20,6 +18,17 @@ public class Client {
                 System.out.println(accounts[i]);
             }
         }
+    }
+
+    public void listAccounts(long agency){}
+
+    public double approveLimit(double amount, int accountTime){
+        double preAprovalLimit = 200 + (300 * accountTime);
+
+        if (amount < preAprovalLimit) {
+            return amount;
+        }
+        return preAprovalLimit;
     }
 
     public void addAccount(Account newAccount){
@@ -50,6 +59,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return this.nome;
+        return String.valueOf(number);
     }
 }
