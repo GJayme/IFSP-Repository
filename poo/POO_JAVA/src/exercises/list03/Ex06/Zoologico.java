@@ -1,4 +1,4 @@
-package class_05.exercise03;
+package exercises.list03.Ex06;
 
 public class Zoologico {
 
