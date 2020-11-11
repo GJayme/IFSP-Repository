@@ -60,7 +60,23 @@
                                         <div class="divider-custom-line"></div>
                                     </div>
                                     <!-- Portfolio Modal - Text-->
-                                    <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+                                    
+                                    <div id="divTabelaPersonagem">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nome</th>
+                                                    <th>Apelido</th>
+                                                    <th>Título</th>
+                                                    <th>Sexo</th>
+                                                    <th>Cultura</th>
+                                                </tr>
+                                            </<thead>
+                                            <tbody id="tboodyTabelaPersonagens">
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                     <button class="btn btn-primary" data-dismiss="modal">
                                         <i class="fas fa-times fa-fw"></i>
                                         Close Window

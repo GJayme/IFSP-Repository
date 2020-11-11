@@ -1,5 +1,6 @@
 // Global
 let listaLivrosInfo;
+let listaPersonagensGlobal = [];
 
 $.ajax({
   url: "https://www.anapioficeandfire.com/api/books",
@@ -8,7 +9,6 @@ $.ajax({
 })
   .done(function (resposta) {
     listaLivrosInfo = JSON.parse(resposta);
-    //console.log(listaPersonagensInfo);
     escreveLivrosComoLista();
   })
   .fail(function (jqXHR, textStatus) {
@@ -42,9 +42,36 @@ function escreveLivrosComoLista() {
 }
 
 function chamaModal(idDoLivroNalista) {
-  console.log(listaLivrosInfo[idDoLivroNalista].name);
-
   $("#portfolioModal1Label").html(listaLivrosInfo[idDoLivroNalista].name);
-
   $("#portfolioModal1").modal();
+
+  getPersonagensFromAPI(listaLivrosInfo[idDoLivroNalista].characters);
+}
+
+function getPersonagensFromAPI(listaLinkPersonagens) {
+  for (let i = 0; i < listaLinkPersonagens.length; i++) {
+    $.ajax({
+      url: listaLinkPersonagens[i],
+      type: "GET",
+      dataType: "html",
+    })
+      .done(function (resposta) {
+        let personagensAtual = JSON.parse(resposta);
+
+        $("#tboodyTabelaPersonagens").append(
+          `
+            <tr>
+              <td>${personagensAtual.name}</td>
+              <td>${personagensAtual.aliases}</td>
+              <td>${personagensAtual.titles}</td>
+              <td>${personagensAtual.gender}</td>
+              <td>${personagensAtual.culture}</td>
+            </tr>
+          `
+        );
+      })
+      .fail(function (jqXHR, textStatus) {
+        console.log("Request failed: " + textStatus);
+      });
+  }
 }
