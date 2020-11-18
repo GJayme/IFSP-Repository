@@ -1,0 +1,141 @@
+
+
+*{
+	margin: 0;
+	padding:0;
+	border:0;
+}
+a{
+	text-decoration: none;
+	color: inherit;
+	margin: 0;
+	padding:0;
+	border:0;
+}
+body{
+	background-image: url("../imgs/fundo.png");
+	font-family: Arial, Helvetica, sans-serif;
+}
+#conteudo{
+	width:780px;
+	margin: auto;
+	margin-top: 35px;	
+}
+#cabecalho{
+	text-align: center;
+	background-color: #888;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	padding-bottom: 25px;
+	padding-top: 25px;
+
+}
+#principal{
+	background-color: #ddd;
+	padding: 25px;
+}
+footer{
+	text-align: center;
+	padding-bottom: 25px;
+	padding-top: 25px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background-color: #888;
+}
+
+#menu{
+	width:80%;
+	margin: auto;
+}
+
+#menu ul{
+	margin-top:15px;
+	list-style-type: none;
+}
+
+#menu li{
+	display: inline;
+	margin-right: 35px;
+	background-color: gray;
+	padding: 5px;
+	cursor:pointer;
+}
+
+#menu li:hover{
+	font-weight: bold;
+}
+/*Para remover a margin do ultimo filho e centralizar*/
+#menu #ultimoItem{
+	margin-right: 0px;
+}
+
+/*------ESTILO DA PÁGINA CALCULADORA----*/
+#calculadora{
+	width: 420px;
+}
+
+#calculadora #resultado{
+	font-size: 25px;
+	padding:5px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+#calculadora #num1,#num2{
+	font-size: 15px;
+	padding:5px;
+	width: 75px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+#calculadora h2{
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+/*----ESTILOS GERAIS-----*/
+
+.contorno{
+	margin:auto;
+	border: 1px solid gray;
+	border-radius: 10px;	
+	padding: 20px;
+	text-align: center;
+}
+
+.contorno h2{
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.esquerda{
+	float: left;
+}
+
+.direita{
+	float: right;
+}
+
+.centro{
+	margin:auto;
+}
+
+button{
+	background-color: gray;
+	border: 2px groove black;
+	padding: 7px;
+	margin:7px;
+	cursor:pointer;
+	min-width: 30px;
+}
+
+#resultado{
+	font-size: 18px;
+	line-height: 35px;
+	padding: 15px;
+}
+
+.table td{
+	border: 1px solid #333;
+}
