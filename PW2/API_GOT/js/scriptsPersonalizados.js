@@ -1,6 +1,7 @@
 // Global
 let listaLivrosInfo;
 let listaPersonagensGlobal = [];
+let qtdePaginasPaginacao;
 
 $.ajax({
   url: "https://www.anapioficeandfire.com/api/books",
@@ -41,11 +42,60 @@ function escreveLivrosComoLista() {
   }
 }
 
+function ordenacao(a, b) {
+  // if (a < b) {
+  //   return -1;
+  // } else if (a > b) {
+  //   return 1;
+  // } else {
+  //   return 0;
+  // }
+  return a - b;
+}
+
+function ordenaNome(a, b) {
+  if (a.name < b.name) {
+    return -1;
+  } else if (a.name > b.name) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 function chamaModal(idDoLivroNalista) {
   $("#portfolioModal1Label").html(listaLivrosInfo[idDoLivroNalista].name);
   $("#portfolioModal1").modal();
 
   getPersonagensFromAPI(listaLivrosInfo[idDoLivroNalista].characters);
+}
+
+function paginacao() {
+  qtdeLinhas = 10;
+  tbody = $("#tboodyTabelaPersonagens");
+  qtdePaginas = Math.ceil(tbody.children().length / qtdeLinhas);
+
+  //botões da paginação
+  for (let i = 0; i < qtdePaginas; i++) {
+    $("#paginacao").append(
+      `<button onclick='trocaPagina(${qtdeLinhas},${i + 1})'> ${
+        i + 1
+      } </button>`
+    );
+  }
+}
+
+function trocaPagina(qtdeLinhas, pagAtual) {
+  for (let i = 0; i < tbody.children().length; i++) {
+    if (
+      i + 1 < qtdeLinhas * pagAtual - qtdeLinhas ||
+      i + 1 > qtdeLinhas * pagAtual
+    ) {
+      $(tbody.children()[i]).hide();
+    } else {
+      $(tbody.children()[i]).show();
+    }
+  }
 }
 
 function getPersonagensFromAPI(listaLinkPersonagens) {
@@ -57,10 +107,12 @@ function getPersonagensFromAPI(listaLinkPersonagens) {
     })
       .done(function (resposta) {
         let personagensAtual = JSON.parse(resposta);
+        listaPersonagensGlobal.push(personagensAtual);
 
         $("#tboodyTabelaPersonagens").append(
           `
             <tr>
+              <td>${i + 1}</td>
               <td>${personagensAtual.name}</td>
               <td>${personagensAtual.aliases}</td>
               <td>${personagensAtual.titles}</td>

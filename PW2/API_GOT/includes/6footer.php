@@ -60,11 +60,14 @@
                                         <div class="divider-custom-line"></div>
                                     </div>
                                     <!-- Portfolio Modal - Text-->
+
+                                    <div id="paginacao"></div>
                                     
                                     <div id="divTabelaPersonagem">
                                         <table class="table">
                                             <thead>
                                                 <tr>
+                                                    <th>ID</th>
                                                     <th>Nome</th>
                                                     <th>Apelido</th>
                                                     <th>Título</th>
