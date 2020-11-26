@@ -10,16 +10,27 @@
             echo "</pre>";
          }
 
-         $totalCompu;
-         $totalMed;   
-         $totalFisica;
-         $totalFisio;
-         $totalSoft;
-         $totalIA;
-         $totalQuim;
-         $totalLetras;
-         $totalRH;
-         $totalComp;
+         $totalCompu = 0;
+         $totalMed = 0;   
+         $totalFisica = 0;
+         $totalFisio = 0;
+         $totalSoft = 0;
+         $totalIA = 0;
+         $totalQuim = 0;
+         $totalLetras = 0;
+         $totalRH = 0;
+         $totalComp = 0;
+
+         $numCompu = 0;   
+         $numMed = 0;   
+         $numFisica = 0;
+         $numFisio = 0;
+         $numSoft = 0;
+         $numIA = 0;
+         $numQuim = 0;
+         $numLetras = 0;
+         $numRH = 0;
+         $numComp = 0;
 
          $arquivoFunncionarios = fopen("./arquivos/funcionario.csv", "r");
          $arquivoDepartamenntos = fopen("./arquivos/departamento.csv", "r");
@@ -79,47 +90,60 @@
          
          for($i = 1; $i < count($funcionarios); $i++) {
             if($funcionarios[$i]["Nome Departamento"] == "Dep Computação") {
-               $totalCompu .= $funcionarios[$i]["salario"];
+               $totalCompu = $totalCompu + intval($funcionarios[$i]["salario"]);   
+               $numCompu = $numCompu + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep Medicina") {
-               $totalMed .= $funcionarios[$i]["salario"];
+               $totalMed = $totalMed + intval($funcionarios[$i]["salario"]);
+               $numMed = $numMed + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep Ed. Física") {
-               $totalFisica .= $funcionarios[$i]["salario"];
+               $totalFisica = $totalFisica + intval($funcionarios[$i]["salario"]);
+               $numFisica = $numFisica + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep Fisioterapia") {
-               $totalFisio .= $funcionarios[$i]["salario"];
+               $totalFisio = $totalFisio + intval($funcionarios[$i]["salario"]);
+               $numFisio = $numFisio + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep Eng Software") {
-               $totalSoft .= $funcionarios[$i]["salario"];
+               $totalSoft = $totalSoft + intval($funcionarios[$i]["salario"]);
+               $numSoft = $numSoft + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep IA") {
-               $totalIA .= $funcionarios[$i]["salario"];
+               $totalIA = $totalIA + intval($funcionarios[$i]["salario"]);
+               $numIA = $numIA + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep Eng Quimica") {
-               $totalQuim .= $funcionarios[$i]["salario"];
+               $totalQuim = $totalQuim + intval($funcionarios[$i]["salario"]);
+               $numQuim = $numQuim + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep Letras") {
-               $totalLetras .= $funcionarios[$i]["salario"];
+               $totalLetras = $totalLetras + intval($funcionarios[$i]["salario"]);
+               $numLetras = $numLetras + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep RH") {
-               $totalRH .= $funcionarios[$i]["salario"];
+               $totalRH = $totalRH + intval($funcionarios[$i]["salario"]);
+               $numRH = $numRH + 1;
             }
             if($funcionarios[$i]["Nome Departamento"] == "Dep Compras") {
-               $totalComp .= $funcionarios[$i]["salario"];
+               $totalComp = $totalComp + intval($funcionarios[$i]["salario"]);
+               $numComp = $numComp + 1;
             }
          }
 
-         $mediaCompu = $totalCompu/$numFuncionarios;
-         $mediaMed = $totalMed/$numFuncionarios;
-         $mediaFisica = $totalFisica/$numFuncionarios;
-         $mediaFisio = $totalFisio/$numFuncionarios;
-         $mediaSoft = $totalSoft/$numFuncionarios;
-         $mediaIA = $totalIA/$numFuncionarios;
-         $mediaQuim = $totalQuim/$numFuncionarios;
-         $mediaLetras = $totalLetras/$numFuncionarios;
-         $mediaRH = $totalRH/$numFuncionarios;
-         $mediaComp = $totalComp/$numFuncionarios;
+         debug($totalComp);
+
+
+         $mediaCompu = $totalCompu/$numCompu;
+         $mediaMed = $totalMed/$numMed;
+         $mediaFisica = $totalFisica/$numFisica;
+         $mediaFisio = $totalFisio/$numFisio;
+         $mediaSoft = $totalSoft/$numSoft;
+         $mediaIA = $totalIA/$numIA;
+         $mediaQuim = $totalQuim/$numQuim;
+         $mediaLetras = $totalLetras/$numLetras;
+         $mediaRH = $totalRH/$numRH;
+         $mediaComp = $totalComp/$numComp;
 
          for($j = 1; $j < count($departamentos); $j++) {
             if($departamentos[$j]["nome"] == "Dep Computação") {
