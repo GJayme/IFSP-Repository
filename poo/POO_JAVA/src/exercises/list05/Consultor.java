@@ -1,14 +1,15 @@
 package exercises.list05;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Consultor extends Funcionario{
 
-    List<Funcionario> subordinados = new ArrayList<>();
+    private List<Funcionario> subordinados = new ArrayList<>();
 
-    public Consultor(String cpf, String nome, Integer idade, boolean sexo, Double valorVendido, Consultor patrao) {
-        super(cpf, nome, idade, sexo, valorVendido);
+    public Consultor(String cpf, String nome, Integer idade, boolean sexo, Double valorVendido, Consultor responsavel) {
+        super(cpf, nome, idade, sexo, valorVendido, responsavel);
     }
 
     @Override
@@ -41,5 +42,14 @@ public class Consultor extends Funcionario{
 
     public int numSubordinados() {
         return subordinados.size();
+    }
+
+    public Iterator<Funcionario> iterator(){
+        return subordinados.iterator();
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +" | Subordinados: " + numSubordinados();
     }
 }

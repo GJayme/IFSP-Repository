@@ -10,36 +10,47 @@ public abstract class Funcionario {
     private boolean sexo;
     private Double valorVendido;
 
+    private Consultor responsavel;
+
     public abstract double calculaComissao();
 
-    public Funcionario(String cpf, String nome, Integer idade, boolean sexo, Double valorVendido) {
+    public Funcionario(String cpf, String nome, Integer idade, boolean sexo, Double valorVendido, Consultor responsavel) {
         this.cpf = cpf;
         this.nome = nome;
         this.idade = idade;
         this.sexo = sexo;
         this.valorVendido = valorVendido;
+
+        if(responsavel != null) {
+            this.responsavel = responsavel;
+            this.responsavel.addSubordinado(this);
+        }
     }
 
     @Override
     public String toString() {
-        return "Funcionario: " + nome
-                + " CPF: " + cpf
-                + " Idade: " + idade
-                + " Sexo: " + sexo
-                + " valor vendido: " + valorVendido;
+        return "Tipo:" + getClass().getSimpleName()
+                + " | CPF: " + cpf
+                + " | Nome: " + nome
+                + " | Idade: " + idade
+                + " | Sexo: " + (sexo ? "F" : "M")
+                + " | Valor Vendido: " + valorVendido
+                + " | Comissão" + calculaComissao()
+                + " | Responsável " + (responsavel != null ? responsavel.getNome() : "--")
+                + " |";
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Funcionario)) return false;
         Funcionario that = (Funcionario) o;
-        return cpf.equals(that.cpf);
+        return getCpf().equals(that.getCpf());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cpf);
+        return Objects.hash(getCpf());
     }
 
     public String getCpf() {
