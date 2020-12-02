@@ -48,7 +48,7 @@ public abstract class Funcionario {
         this.idade = idade;
     }
 
-    public boolean isSexo() {
+    public boolean getSexo() {
         return sexo;
     }
 

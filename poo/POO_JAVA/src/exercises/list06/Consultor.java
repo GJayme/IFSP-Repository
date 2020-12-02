@@ -12,6 +12,15 @@ public class Consultor extends Funcionario{
         super(cpf, nome, idade, sexo, valorVendido, responsavel);
     }
 
+    public Consultor(Revendedor revendedor) {
+        this(revendedor.getCpf(),
+                revendedor.getNome(),
+                revendedor.getIdade(),
+                revendedor.getSexo(),
+                revendedor.getValorVendido(),
+                revendedor.getResponsavel());
+    }
+
     @Override
     public Double calculaComissao() {
         double comissao = getValorVendido() * 0.15;

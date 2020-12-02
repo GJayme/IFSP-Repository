@@ -3,6 +3,7 @@ package exercises.list06;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class AppCli {
 
@@ -38,9 +39,90 @@ public class AppCli {
     }
 
     private static void inserirUsuario() {
+        System.out.println("CPF: ");
+        String cpf = scanner.nextLine();
+        Funcionario result = dao.findOne(cpf);
+
+        if(result != null) {
+            System.out.println("Usuário CPF " + cpf + " já esta cadastrado!");
+            System.out.println("\n");
+            return;
+        }
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Idade: ");
+        Integer idade = Integer.valueOf(scanner.nextLine());
+        System.out.print("Sexo [F, M]: ");
+        String sexo = scanner.nextLine();
+        System.out.print("Valor Vendido: ");
+        Double valorVendido = Double.valueOf(scanner.nextLine());
+        System.out.print("Superior [CPF]: ");
+        String cpfSuperior = scanner.nextLine();
+
+        if(cpfSuperior == null) {
+            System.out.println("CPF do superior (" + cpf + ") não encontrado!");
+            System.out.println("\n");
+            return;
+        }
+
+        Funcionario superior = dao.findOne(cpfSuperior);
+        if(superior instanceof Revendedor){
+            superior = promoverSuperior((Revendedor) superior);
+        }
+
+        boolean boolSexo = sexo.toUpperCase().equals("F") ? true : false;
+        Funcionario novoFuncionario = new Revendedor(cpf, nome, idade, boolSexo, valorVendido,(Consultor) superior);
+
+        dao.insert(novoFuncionario);
     }
 
     private static void atualizarUsuario() {
+        System.out.println("CPF: ");
+        String cpf = scanner.nextLine();
+        Funcionario result = dao.findOne(cpf);
+
+        if(result == null) {
+            System.out.println("Usuário CPF " + cpf + " não encontrado!");
+            System.out.println("\n");
+            return;
+        }
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Idade: ");
+        Integer idade = Integer.valueOf(scanner.nextLine());
+        System.out.print("Sexo [F, M]: ");
+        String sexo = scanner.nextLine();
+        System.out.print("Valor Vendido: ");
+        Double valorVendido = Double.valueOf(scanner.nextLine());
+        System.out.print("Superior [CPF]: ");
+        String cpfSuperior = scanner.nextLine();
+
+        if(cpfSuperior == null) {
+            System.out.println("CPF do superior (" + cpf + ") não encontrado!");
+            System.out.println("\n");
+            return;
+        }
+
+        Funcionario superior = dao.findOne(cpfSuperior);
+        if(superior instanceof Revendedor){
+            superior = promoverSuperior((Revendedor) superior);
+        }
+
+        result.setNome(nome);
+        result.setIdade(idade);
+        result.setSexo(sexo.toUpperCase().equals("F")? true : false);
+        result.setValorVendido(valorVendido);
+        result.setResponsavel((Consultor) superior);
+
+        dao.update(result);
+    }
+
+    private static Funcionario promoverSuperior(Revendedor revendedor) {
+        Consultor promovido = new Consultor(revendedor);
+        dao.update(promovido);
+        return promovido;
     }
 
     private static void removerUsuario() {
