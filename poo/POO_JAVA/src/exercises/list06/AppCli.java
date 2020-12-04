@@ -3,7 +3,6 @@ package exercises.list06;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Function;
 
 public class AppCli {
 
