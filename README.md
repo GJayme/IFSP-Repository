@@ -16,4 +16,4 @@ Studies carried out on ADS - IFSP
 6. [PW2](https://github.com/GJayme/PW2)
 6.0 [P1](https://github.com/GJayme/P1-PW2)
 6.1 [P2](https://github.com/GJayme/P2-PW2)
-7.0 [PW4](https://github.com/GJayme/pw4-ifsp)
+7 [PW4](https://github.com/GJayme/pw4-ifsp)
