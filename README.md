@@ -19,3 +19,4 @@ Studies carried out on ADS - IFSP
 7.2 [P2](https://github.com/GJayme/P2-PW2)
 8. [PW4](https://github.com/GJayme/pw4-ifsp)
 9. [PDM](https://github.com/GJayme/pdm-ifsp)
+10. [TC1](https://github.com/GJayme/tc1-ifsp)
